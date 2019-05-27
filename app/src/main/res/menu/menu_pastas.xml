@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/add_pasta"
+        android:title="@string/adicionar_pasta"
+        app:showAsAction="never"></item>
+    <item
+        android:id="@+id/buscar_pasta"
+        android:title="@string/buscar_pasta"
+        app:showAsAction="never"></item>
+</menu>
