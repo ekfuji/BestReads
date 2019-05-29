@@ -37,6 +37,7 @@ public class PastaAdapter extends RecyclerView.Adapter<PastaAdapter.HomePageView
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view_pasta, viewGroup, false);
         HomePageViewHolder homePageViewHolder = new HomePageViewHolder(view);
 
+
         return  homePageViewHolder;
     }
 

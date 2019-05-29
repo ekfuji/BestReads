@@ -1,5 +1,9 @@
 package br.edu.ctup.bestreads.Activities;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.OnLifecycleEvent;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +20,7 @@ import android.widget.Toolbar;
 import java.util.ArrayList;
 
 import br.edu.ctup.bestreads.Adapter.PastaAdapter;
+import br.edu.ctup.bestreads.DAO.HelperDAO;
 import br.edu.ctup.bestreads.Model.Pasta;
 import br.edu.ctup.bestreads.R;
 
@@ -39,9 +44,20 @@ public class HomePageActivity extends AppCompatActivity {
         pastaLayoutManager = new LinearLayoutManager(this);
         pastaAdapter = new PastaAdapter(pastas);
 
+
         pastaRecyclerView.setLayoutManager(pastaLayoutManager);
         pastaRecyclerView.setAdapter(pastaAdapter);
 
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    public void OnResume(){
+        ArrayList<Pasta> pastas = new ArrayList<>();
+        pastas.add(new Pasta(1,"Lido"));
+        pastas.add(new Pasta(2,"Não Lido"));
+
+        //Cursor cursor =
+        //pastaAdapter = new PastaAdapter();
     }
 
     @Override
@@ -55,7 +71,8 @@ public class HomePageActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.add_pasta:
-                Toast.makeText(this, "Adicionando Pasta", Toast.LENGTH_SHORT).show();
+                Intent intentOrigem = new Intent(HomePageActivity.this, CadastrarPasta.class);
+                startActivity(intentOrigem);
                 return true;
             case R.id.buscar_pasta:
                 Toast.makeText(this, "Buscando Pasta", Toast.LENGTH_SHORT).show();

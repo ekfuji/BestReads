@@ -2,10 +2,15 @@ package br.edu.ctup.bestreads.DAO;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import br.edu.ctup.bestreads.Activities.CadastrarPasta;
 import br.edu.ctup.bestreads.Model.Acervo;
 import br.edu.ctup.bestreads.Model.Autor;
 import br.edu.ctup.bestreads.Model.Avaliacao;
@@ -25,7 +30,7 @@ public class HelperDAO extends SQLiteOpenHelper {
     private static final String SQL_CRIAR_TABELA_GENERO =
             "CREATE TABLE IF NOT EXISTS " + ContratoDAO.TabelaGenero.NOME_DA_TABELA + " (" +
                     ContratoDAO.TabelaGenero.COLUNA_ID + TIPO_INTEIRO + " PRIMARY KEY AUTOINCREMENT" + VIRGULA +
-                    ContratoDAO.TabelaGenero.COLUNA_NOME_GENERO + TIPO_TEXTO + "NOT NULL"+ ")";
+                    ContratoDAO.TabelaGenero.COLUNA_NOME_GENERO + TIPO_TEXTO + "TEXT NOT NULL"+ ")";
 
     private static final String SQL_DELETAR_TABELA_GENERO =
             "DROP TABLE IF EXISTS " + ContratoDAO.TabelaGenero.NOME_DA_TABELA;
@@ -34,7 +39,7 @@ public class HelperDAO extends SQLiteOpenHelper {
     private static final String SQL_CRIAR_TABELA_AUTOR =
             "CREATE TABLE IF NOT EXISTS " + ContratoDAO.TabelaAutor.NOME_DA_TABELA + " (" +
                     ContratoDAO.TabelaAutor.COLUNA_ID + TIPO_INTEIRO + " PRIMARY KEY AUTOINCREMENT" + VIRGULA +
-                    ContratoDAO.TabelaAutor.COLUNA_LOCALIDADE + TIPO_TEXTO + "NOT NULL" + VIRGULA +
+                    ContratoDAO.TabelaAutor.COLUNA_LOCALIDADE + TIPO_TEXTO + "TEXT NOT NULL" + VIRGULA +
                     ContratoDAO.TabelaAutor.COLUNA_NOME_AUTOR + TIPO_TEXTO + ")";
 
     private static final String SQL_DELETAR_TABELA_AUTOR =
@@ -44,7 +49,7 @@ public class HelperDAO extends SQLiteOpenHelper {
     private static final String SQL_CRIAR_TABELA_PASTA =
             "CREATE TABLE IF NOT EXISTS " + ContratoDAO.TabelaPasta.NOME_DA_TABELA + " (" +
                     ContratoDAO.TabelaPasta.COLUNA_ID + TIPO_INTEIRO + " PRIMARY KEY AUTOINCREMENT" + VIRGULA +
-                    ContratoDAO.TabelaPasta.COLUNA_NOME_PASTA + TIPO_TEXTO + "NOT NULL" + ")";
+                    ContratoDAO.TabelaPasta.COLUNA_NOME_PASTA + TIPO_TEXTO + "TEXT NOT NULL" + ")";
 
     private static final String SQL_DELETAR_TABELA_PASTA =
             "DROP TABLE IF EXISTS " + ContratoDAO.TabelaPasta.NOME_DA_TABELA;
@@ -53,14 +58,14 @@ public class HelperDAO extends SQLiteOpenHelper {
     private static final String SQL_CRIAR_TABELA_LIVRO=
             "CREATE TABLE IF NOT EXISTS " + ContratoDAO.TabelaLivro.NOME_DA_TABELA + " (" +
                     ContratoDAO.TabelaLivro.COLUNA_ID + TIPO_INTEIRO + " PRIMARY KEY AUTOINCREMENT" + VIRGULA +
-                    ContratoDAO.TabelaLivro.COLUNA_NOME_LIVRO + TIPO_TEXTO + "NOT NULL" + VIRGULA +
-                    ContratoDAO.TabelaLivro.COLUNA_LIDO + TIPO_INTEIRO + "NOT NULL" + VIRGULA +
+                    ContratoDAO.TabelaLivro.COLUNA_NOME_LIVRO + TIPO_TEXTO + "TEXT NOT NULL" + VIRGULA +
+                    ContratoDAO.TabelaLivro.COLUNA_LIDO + TIPO_INTEIRO + "TEXT NOT NULL" + VIRGULA +
                     ContratoDAO.TabelaLivro.COLUNA_ANO_PUBLICACAO + TIPO_TEXTO +  VIRGULA +
                     ContratoDAO.TabelaLivro.COLUNA_FOTO_LIVRO + TIPO_BLOB +  VIRGULA +
-                    ContratoDAO.TabelaLivro.COLUNA_ID_AUTOR + TIPO_INTEIRO + "NOT NULL" + VIRGULA +
-                    ContratoDAO.TabelaLivro.COLUNA_ID_GENERO + TIPO_INTEIRO + "NOT NULL" + VIRGULA +
-                    "FOREIGN KEY (IdAutor) REFERENCES" + ContratoDAO.TabelaAutor.COLUNA_ID + VIRGULA +
-                    "FOREIGN KEY (IdGenero) REFERENCES" + ContratoDAO.TabelaGenero.COLUNA_ID + ")";
+                    ContratoDAO.TabelaLivro.COLUNA_ID_AUTOR + TIPO_INTEIRO + "INT NOT NULL" + VIRGULA +
+                    ContratoDAO.TabelaLivro.COLUNA_ID_GENERO + TIPO_INTEIRO + "INT NOT NULL" + VIRGULA +
+                    "FOREIGN KEY (IdAutor) REFERENCES " + ContratoDAO.TabelaAutor.COLUNA_ID + VIRGULA +
+                    "FOREIGN KEY (IdGenero) REFERENCES " + ContratoDAO.TabelaGenero.COLUNA_ID + ")";
 
     private static final String SQL_DELETAR_TABELA_LIVRO =
             "DROP TABLE IF EXISTS " + ContratoDAO.TabelaLivro.NOME_DA_TABELA;
@@ -68,11 +73,11 @@ public class HelperDAO extends SQLiteOpenHelper {
     private static final String SQL_CRIAR_TABELA_AVALIACAO=
             "CREATE TABLE IF NOT EXISTS " + ContratoDAO.TabelaAvaliacao.NOME_DA_TABELA + " (" +
                     ContratoDAO.TabelaAvaliacao.COLUNA_ID + TIPO_INTEIRO + " PRIMARY KEY AUTOINCREMENT" + VIRGULA +
-                    ContratoDAO.TabelaAvaliacao.COLUNA_NOTA + TIPO_INTEIRO + "NOT NULL" + VIRGULA +
+                    ContratoDAO.TabelaAvaliacao.COLUNA_NOTA + TIPO_INTEIRO + "TEXT NOT NULL" + VIRGULA +
                     ContratoDAO.TabelaAvaliacao.COLUNA_PARECER + TIPO_TEXTO + VIRGULA +
-                    ContratoDAO.TabelaAvaliacao.COLUNA_DATA + TIPO_TEXTO + "NOT NULL" + VIRGULA +
-                    ContratoDAO.TabelaAvaliacao.COLUNA_IDLIVRO + TIPO_INTEIRO + "NOT NULL" + VIRGULA +
-                    "FOREIGN KEY (IdLivro) REFERENCES" + ContratoDAO.TabelaLivro.COLUNA_ID + ")";
+                    ContratoDAO.TabelaAvaliacao.COLUNA_DATA + TIPO_TEXTO + "INT NOT NULL" + VIRGULA +
+                    ContratoDAO.TabelaAvaliacao.COLUNA_IDLIVRO + TIPO_INTEIRO + "INT NOT NULL" + VIRGULA +
+                    "FOREIGN KEY (IdLivro) REFERENCES " + ContratoDAO.TabelaLivro.COLUNA_ID + ")";
 
     private static final String SQL_DELETAR_TABELA_AVALIACAO =
             "DROP TABLE IF EXISTS " + ContratoDAO.TabelaAvaliacao.NOME_DA_TABELA;
@@ -80,10 +85,10 @@ public class HelperDAO extends SQLiteOpenHelper {
     private static final String SQL_CRIAR_TABELA_ACERVO=
             "CREATE TABLE IF NOT EXISTS " + ContratoDAO.TabelaAcervo.NOME_DA_TABELA + " (" +
                     ContratoDAO.TabelaAcervo.COLUNA_ID + TIPO_INTEIRO + " PRIMARY KEY AUTOINCREMENT" + VIRGULA +
-                    ContratoDAO.TabelaAcervo.COLUNA_IDLIVRO + TIPO_INTEIRO + "NOT NULL" + VIRGULA +
-                    ContratoDAO.TabelaAcervo.COLUNA_IDPASTA + TIPO_INTEIRO + "NOT NULL" + VIRGULA +
-                    "FOREIGN KEY (IdLivro) REFERENCES" + ContratoDAO.TabelaLivro.COLUNA_ID + VIRGULA +
-                    "FOREIGN KEY (IdPasta) REFERENCES" + ContratoDAO.TabelaPasta.COLUNA_ID + ")";
+                    ContratoDAO.TabelaAcervo.COLUNA_IDLIVRO + TIPO_INTEIRO + "INT NOT NULL" + VIRGULA +
+                    ContratoDAO.TabelaAcervo.COLUNA_IDPASTA + TIPO_INTEIRO + "INT NOT NULL" + VIRGULA +
+                    "FOREIGN KEY (IdLivro) REFERENCES " + ContratoDAO.TabelaLivro.COLUNA_ID + VIRGULA +
+                    "FOREIGN KEY (IdPasta) REFERENCES " + ContratoDAO.TabelaPasta.COLUNA_ID + ")";
 
     private static final String SQL_DELETAR_TABELA_ACERVO =
             "DROP TABLE IF EXISTS " + ContratoDAO.TabelaAcervo.NOME_DA_TABELA;
@@ -146,7 +151,16 @@ public class HelperDAO extends SQLiteOpenHelper {
     public long cadastrarPasta(Pasta pasta){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(ContratoDAO.TabelaPasta.COLUNA_NOME_PASTA, pasta.getNomePasta());
+        try
+        {
+            values.put(ContratoDAO.TabelaPasta.COLUNA_NOME_PASTA, pasta.getNomePasta());
+            Log.d("Erros", "Pasta Cadastrada");
+        }
+        catch (Exception e){
+            Log.d("Erros", "Erro ao cadastrar pasta");
+            Log.d("Erros", e.getMessage());
+        }
+
         return db.insert(ContratoDAO.TabelaPasta.NOME_DA_TABELA, null, values);
     }
 
@@ -180,6 +194,14 @@ public class HelperDAO extends SQLiteOpenHelper {
         return db.insert(ContratoDAO.TabelaAcervo.NOME_DA_TABELA, null, values);
     }
 
+    public Cursor listarPasta(){
 
+        Cursor cursor;
+
+        String [] campos = {"idPasta","nomePasta"};
+        SQLiteDatabase db = getReadableDatabase();
+
+        return cursor = db.query(ContratoDAO.TabelaPasta.NOME_DA_TABELA,campos,null,null,null,null,ContratoDAO.TabelaPasta.COLUNA_NOME_PASTA);
+    }
 
 }
