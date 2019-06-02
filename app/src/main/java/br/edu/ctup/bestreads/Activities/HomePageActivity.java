@@ -13,7 +13,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -26,17 +29,22 @@ import br.edu.ctup.bestreads.Model.Pasta;
 import br.edu.ctup.bestreads.R;
 
 public class HomePageActivity extends AppCompatActivity {
-
+    private  ArrayList<Pasta> pastasArrayList;
     private RecyclerView pastaRecyclerView;
-    private RecyclerView.Adapter pastaAdapter;
+    private PastaAdapter pastaAdapter;
     private RecyclerView.LayoutManager pastaLayoutManager;
+    private ImageView btn_excluir_pasta;
+    private ImageView btn_editar_pasta;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        pastasArrayList = new ArrayList<Pasta>();
+        pastasArrayList =  PastaDAO.listarPastas(this);
         setContentView(R.layout.activity_home_page);
+        btn_excluir_pasta = findViewById(R.id.btn_excluir_pasta);
+        btn_editar_pasta = findViewById(R.id.btn_editar_pasta);
 
-        final ArrayList<Pasta> pastasArrayList = PastaDAO.listarPastas(this);
         String[] pastas = new String[pastasArrayList.size()];
 
 
@@ -48,11 +56,54 @@ public class HomePageActivity extends AppCompatActivity {
 
         pastaRecyclerView.setLayoutManager(pastaLayoutManager);
         pastaRecyclerView.setAdapter(pastaAdapter);
+        pastaAdapter.setOnItemClickListener(new PastaAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                changeItem(position, "Rodolfo Lindo");
+            }
+
+            @Override
+            public void onDeleteClick(int position) {
+                deleteItem(position);
+            }
+
+            @Override
+            public void onEditClick(int position) {
+                editItem(position);
+            }
+        });
+
 
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     public void OnResume(){
+
+    }
+
+    public void changeItem(int position, String text){
+        pastasArrayList.get(position).changeNomePasta(text);
+        pastaAdapter.notifyItemChanged(position);
+    }
+
+    public void deleteItem(int position){
+        Pasta pasta = pastasArrayList.get(position);
+        PastaDAO.excluirPasta(this,pasta);
+        Toast.makeText(this,"Exluído com Sucesso", Toast.LENGTH_SHORT).show();
+        pastasArrayList =  PastaDAO.listarPastas(this);
+        pastaRecyclerView = findViewById(R.id.recyclerView);
+        pastaRecyclerView.setHasFixedSize(true);
+        pastaLayoutManager = new LinearLayoutManager(this);
+        pastaAdapter = new PastaAdapter(pastasArrayList);
+        pastaRecyclerView.setLayoutManager(pastaLayoutManager);
+        pastaRecyclerView.setAdapter(pastaAdapter);
+        pastaAdapter.notifyDataSetChanged();
+        pastaAdapter.notifyItemChanged(position);
+    }
+
+    public void editItem(int position){
+        Pasta pasta = pastasArrayList.get(position);
+        pastaAdapter.notifyItemChanged(position);
     }
 
     @Override
@@ -75,6 +126,18 @@ public class HomePageActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+
+    }
+
+    public void buildRecyclerView() {
+        pastaRecyclerView = findViewById(R.id.recyclerView);
+        pastaRecyclerView.setHasFixedSize(true);
+        pastaLayoutManager = new LinearLayoutManager(this);
+        pastaAdapter = new PastaAdapter(pastasArrayList);
+
+        pastaRecyclerView.setLayoutManager(pastaLayoutManager);
+        pastaRecyclerView.setAdapter(pastaAdapter);
+
 
     }
 }
