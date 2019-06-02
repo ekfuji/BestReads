@@ -14,16 +14,8 @@ public class PastaDAO {
         return helper.cadastrarPasta(pasta);
     }
 
-    public  static ArrayList<Pasta> listarPasta (Context context){
+    public static ArrayList<Pasta> listarPastas(Context context){
         HelperDAO helper = new HelperDAO(context);
-        Cursor cursor = helper.listarPasta();
-        ArrayList<Pasta> pastas = new ArrayList<>();
-        String [] nomePasta;
-        if(cursor.getColumnCount()>0){
-            do{
-               //pastas.add(cursor.getColumnNames("idPasta"));
-            }while (cursor.moveToNext());
-        }
-        return  null;
+        return helper.listarPastas();
     }
 }

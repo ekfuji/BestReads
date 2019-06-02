@@ -151,17 +151,60 @@ public class HelperDAO extends SQLiteOpenHelper {
     public long cadastrarPasta(Pasta pasta){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        try
-        {
-            values.put(ContratoDAO.TabelaPasta.COLUNA_NOME_PASTA, pasta.getNomePasta());
-            Log.d("Erros", "Pasta Cadastrada");
-        }
-        catch (Exception e){
-            Log.d("Erros", "Erro ao cadastrar pasta");
-            Log.d("Erros", e.getMessage());
-        }
-
+        values.put(ContratoDAO.TabelaPasta.COLUNA_NOME_PASTA, pasta.getNomePasta());
         return db.insert(ContratoDAO.TabelaPasta.NOME_DA_TABELA, null, values);
+    }
+
+    public ArrayList<Pasta> listarPastas() {
+        ArrayList<Pasta> pastas = new ArrayList<Pasta>();
+        SQLiteDatabase db = getReadableDatabase();
+
+        //Definir quais colunas vão retornar da tabela
+        String[] colunas = {
+                ContratoDAO.TabelaPasta.COLUNA_ID,
+                ContratoDAO.TabelaPasta.COLUNA_NOME_PASTA,
+        };
+
+        Cursor cursor = db.query(ContratoDAO.TabelaPasta.NOME_DA_TABELA,
+                colunas, null, null, null, null, null);
+
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            do {
+                Pasta p = new Pasta();
+                p.setIdPasta(cursor.getInt(0));
+                p.setNomePasta(cursor.getString(1));
+
+                pastas.add(p);
+            } while (cursor.moveToNext());
+        }
+        return pastas;
+    }
+
+    public long alterarPasta(Pasta p) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(ContratoDAO.TabelaPasta.COLUNA_NOME_PASTA, p.getNomePasta());
+
+        String condicao = ContratoDAO.TabelaPasta.COLUNA_ID + " = ?";
+        String[] argumentos = {
+                String.valueOf(p.getIdPasta())
+        };
+
+        return db.update(ContratoDAO.TabelaPasta.NOME_DA_TABELA, values,
+                condicao, argumentos);
+    }
+
+    public long removerPasta(Pasta c){
+        SQLiteDatabase db = getWritableDatabase();
+
+        String condicao = ContratoDAO.TabelaPasta.COLUNA_ID + " = ?";
+        String[] argumentos = {
+                String.valueOf(c.getIdPasta())
+        };
+        return db.delete(ContratoDAO.TabelaPasta.NOME_DA_TABELA,
+                condicao, argumentos);
     }
 
     public long cadastrarLivro(Livro livro){
@@ -194,14 +237,5 @@ public class HelperDAO extends SQLiteOpenHelper {
         return db.insert(ContratoDAO.TabelaAcervo.NOME_DA_TABELA, null, values);
     }
 
-    public Cursor listarPasta(){
-
-        Cursor cursor;
-
-        String [] campos = {"idPasta","nomePasta"};
-        SQLiteDatabase db = getReadableDatabase();
-
-        return cursor = db.query(ContratoDAO.TabelaPasta.NOME_DA_TABELA,campos,null,null,null,null,ContratoDAO.TabelaPasta.COLUNA_NOME_PASTA);
-    }
 
 }

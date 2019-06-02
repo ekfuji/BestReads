@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import br.edu.ctup.bestreads.Adapter.PastaAdapter;
 import br.edu.ctup.bestreads.DAO.HelperDAO;
+import br.edu.ctup.bestreads.DAO.PastaDAO;
 import br.edu.ctup.bestreads.Model.Pasta;
 import br.edu.ctup.bestreads.R;
 
@@ -34,15 +35,15 @@ public class HomePageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_home_page);
-        ArrayList<Pasta> pastas = new ArrayList<>();
-        pastas.add(new Pasta(1,"Lido"));
-        pastas.add(new Pasta(2,"Não Lido"));
+
+        final ArrayList<Pasta> pastasArrayList = PastaDAO.listarPastas(this);
+        String[] pastas = new String[pastasArrayList.size()];
 
 
         pastaRecyclerView = findViewById(R.id.recyclerView);
         pastaRecyclerView.setHasFixedSize(true);
         pastaLayoutManager = new LinearLayoutManager(this);
-        pastaAdapter = new PastaAdapter(pastas);
+        pastaAdapter = new PastaAdapter(pastasArrayList);
 
 
         pastaRecyclerView.setLayoutManager(pastaLayoutManager);
@@ -52,12 +53,6 @@ public class HomePageActivity extends AppCompatActivity {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     public void OnResume(){
-        ArrayList<Pasta> pastas = new ArrayList<>();
-        pastas.add(new Pasta(1,"Lido"));
-        pastas.add(new Pasta(2,"Não Lido"));
-
-        //Cursor cursor =
-        //pastaAdapter = new PastaAdapter();
     }
 
     @Override
