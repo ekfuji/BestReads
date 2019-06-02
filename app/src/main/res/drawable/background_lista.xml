@@ -8,7 +8,7 @@
         android:color="#E8E9EB" />
 
     <solid
-        android:color="#E8E9EB"
+        android:color="#CCE8E9EB"
         />
 
     // The desired corner radius. reduce it to keep it less rounded
