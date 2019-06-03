@@ -12,6 +12,10 @@ public class Pasta {
         this.nomePasta = nomePasta;
     }
 
+    public  void changeNomePasta(String nome){
+        this.nomePasta = nome;
+    }
+
     public int getIdPasta() {
         return idPasta;
     }

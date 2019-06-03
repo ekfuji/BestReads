@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.EditarPastaActivity"
+    android:background="@drawable/background2"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="15dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nome:"
+            android:textSize="22dp"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="6dp"
+            android:layout_marginTop="120dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="Digite o nome da pasta"
+            android:background="@drawable/background_radius"
+            android:id="@+id/txt_nome_pasta_editada"/>
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Salvar"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_radius"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="115dp"
+            android:id="@+id/btn_salvar_pasta_editada"
+            android:onClick="EditarPasta"/>
+    </LinearLayout>
+
+
+
+
+
+
+</LinearLayout>
