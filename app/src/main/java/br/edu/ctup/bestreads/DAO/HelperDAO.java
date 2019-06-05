@@ -181,6 +181,55 @@ public class HelperDAO extends SQLiteOpenHelper {
         return pastas;
     }
 
+    public ArrayList<String>  listarPastasPorNome(){
+        ArrayList<String> pastas = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+
+        //Definir quais colunas vão retornar da tabela
+        String[] colunas = {
+                ContratoDAO.TabelaPasta.COLUNA_NOME_PASTA,
+        };
+
+        Cursor cursor = db.query(ContratoDAO.TabelaPasta.NOME_DA_TABELA,
+                colunas, null, null, null, null, null);
+
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            do {
+
+
+                pastas.add(cursor.getString(cursor.getColumnIndex(ContratoDAO.TabelaPasta.COLUNA_NOME_PASTA)));
+            } while (cursor.moveToNext());
+        }
+        return pastas;
+    }
+
+    public ArrayList<Pasta> encontrarPastaPorNome(String nome) {
+        ArrayList<Pasta> pastas = new ArrayList<Pasta>();
+        SQLiteDatabase db = getReadableDatabase();
+
+        //Definir quais colunas vão retornar da tabela
+        String[] colunas = {
+                ContratoDAO.TabelaPasta.COLUNA_ID,
+                ContratoDAO.TabelaPasta.COLUNA_NOME_PASTA,
+        };
+
+        Cursor cursor = db.query(ContratoDAO.TabelaPasta.NOME_DA_TABELA,
+                colunas, "NomePasta LIKE ?", new String [] {"%"+ nome + "%"}, null, null, null);
+
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            do {
+                Pasta p = new Pasta();
+                p.setIdPasta(cursor.getInt(0));
+                p.setNomePasta(cursor.getString(1));
+
+                pastas.add(p);
+            } while (cursor.moveToNext());
+        }
+        return pastas;
+    }
+
     public long alterarPasta(Pasta p) {
         SQLiteDatabase db = getWritableDatabase();
 

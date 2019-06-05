@@ -29,4 +29,9 @@ public class PastaDAO {
         HelperDAO helper = new HelperDAO(context);
         return helper.alterarPasta(pasta);
     }
+
+    public static ArrayList<Pasta> encontrarPastaPorNome(Context context, String nome){
+        HelperDAO helper = new HelperDAO(context);
+        return helper.encontrarPastaPorNome(nome);
+    }
 }

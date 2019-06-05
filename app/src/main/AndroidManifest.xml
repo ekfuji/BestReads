@@ -12,7 +12,9 @@
         <activity android:name=".Activities.EditarPastaActivity"></activity>
         <activity android:name=".Activities.CadastrarPasta" />
         <activity android:name=".Activities.HomePageActivity" />
-        <activity android:name=".Activities.MainActivity">
+        <activity android:name=".Activities.MainActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
