@@ -169,7 +169,11 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     public void editItem(int position){
-        Pasta pasta = pastasArrayList.get(position);
+        int idPasta = pastasArrayList.get(position).getIdPasta();
+        Toast.makeText(this, String.valueOf(idPasta), Toast.LENGTH_SHORT).show();
+        Intent intentOrigem = new Intent(HomePageActivity.this, EditarPastaActivity.class);
+        intentOrigem.putExtra("idPasta",idPasta);
+        startActivity(intentOrigem);
         pastaAdapter.notifyItemChanged(position);
     }
 

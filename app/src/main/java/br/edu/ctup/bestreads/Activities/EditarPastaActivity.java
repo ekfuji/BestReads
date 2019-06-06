@@ -1,5 +1,6 @@
 package br.edu.ctup.bestreads.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,21 +17,27 @@ public class EditarPastaActivity extends AppCompatActivity {
 
     private Button btnSalvar;
     private TextView txtCampo;
+    private int idPasta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent pegarDado = getIntent();
+        idPasta = pegarDado.getIntExtra("idPasta",0);
         setContentView(R.layout.activity_editar_pasta);
         btnSalvar = findViewById(R.id.btn_salvar_pasta_editada);
         txtCampo = findViewById(R.id.txt_nome_pasta_editada);
 
+
     }
 
     public void EditarPasta(View view) {
+
         Pasta pasta = new Pasta();
         String nomePasta = txtCampo.getText().toString();
+        pasta.setIdPasta(idPasta);
         pasta.setNomePasta(nomePasta);
-        PastaDAO.editarPasta(this,pasta);
+        PastaDAO.editarPasta(this, pasta);
         Toast.makeText(this, "Sucesso", Toast.LENGTH_SHORT).show();
         Intent intentOrigem = new Intent(EditarPastaActivity.this, HomePageActivity.class);
         startActivity(intentOrigem);

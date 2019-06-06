@@ -34,4 +34,9 @@ public class PastaDAO {
         HelperDAO helper = new HelperDAO(context);
         return helper.encontrarPastaPorNome(nome);
     }
+
+    public static Pasta BuscarPastaPorId(Context context,int idPasta){
+        HelperDAO helper = new HelperDAO(context);
+        return helper.buscarPastaPorId(idPasta);
+    }
 }
