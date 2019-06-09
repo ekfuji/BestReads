@@ -230,6 +230,29 @@ public class HelperDAO extends SQLiteOpenHelper {
         return pastas;
     }
 
+    public Pasta buscarPastaPorId(int idPasta){
+        SQLiteDatabase db = getReadableDatabase();
+    //Definir quais colunas vão retornar da tabela
+        String[] colunas = {
+                ContratoDAO.TabelaPasta.COLUNA_ID,
+                ContratoDAO.TabelaPasta.COLUNA_NOME_PASTA,
+        };
+
+        Cursor cursor = db.query(ContratoDAO.TabelaPasta.NOME_DA_TABELA,
+                colunas, "IdPasta = ?", new String [] {"%"+ idPasta + "%"}, null, null, null);
+
+        cursor.moveToFirst();
+        Pasta p = new Pasta();
+        if (cursor.getCount() > 0) {
+            do {
+                p.setIdPasta(cursor.getInt(0));
+                p.setNomePasta(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+        return p;
+
+    }
+
     public long alterarPasta(Pasta p) {
         SQLiteDatabase db = getWritableDatabase();
 
