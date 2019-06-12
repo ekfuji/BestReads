@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Adapter;
+import android.widget.Toast;
 
 import com.mancj.materialsearchbar.MaterialSearchBar;
 
@@ -18,7 +19,9 @@ import br.edu.ctup.bestreads.Adapter.LivroAdapter;
 import br.edu.ctup.bestreads.Adapter.PastaAdapter;
 import br.edu.ctup.bestreads.DAO.HelperDAO;
 import br.edu.ctup.bestreads.DAO.LivroDAO;
+import br.edu.ctup.bestreads.DAO.PastaDAO;
 import br.edu.ctup.bestreads.Model.Livro;
+import br.edu.ctup.bestreads.Model.Pasta;
 import br.edu.ctup.bestreads.R;
 
 public class HomePastaActivity extends AppCompatActivity {
@@ -27,12 +30,13 @@ private HelperDAO helper;
 private RecyclerView livroRecyclerView;
 private LivroAdapter livroAdapter;
 private RecyclerView.LayoutManager livroLayoutManager;
+private static int idPasta;
+
     private MaterialSearchBar materialSearchBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         livrosArrayList = new ArrayList<Livro>();
-        helper = new HelperDAO(this);
         livrosArrayList = LivroDAO.listarLivros(this);
         setContentView(R.layout.activity_home_pasta);
 
@@ -42,6 +46,12 @@ private RecyclerView.LayoutManager livroLayoutManager;
         livroAdapter = new LivroAdapter(livrosArrayList);
         livroRecyclerView.setLayoutManager(livroLayoutManager);
         livroRecyclerView.setAdapter(livroAdapter);
+
+        Intent pegarDado = getIntent();
+        idPasta = pegarDado.getIntExtra("idPasta",0);
+        Pasta pasta = PastaDAO.BuscarPastaPorId(this,idPasta);
+
+        Toast.makeText(HomePastaActivity.this, pasta.getNomePasta(), Toast.LENGTH_SHORT).show();
 
     }
 
@@ -57,6 +67,7 @@ private RecyclerView.LayoutManager livroLayoutManager;
         switch (item.getItemId()){
             case R.id.add_livro:
                 Intent intentOrigem = new Intent(HomePastaActivity.this, CadastrarLivroActivity.class);
+                intentOrigem.putExtra("idPasta",idPasta);
                 startActivity(intentOrigem);
                 return true;
             default:

@@ -237,7 +237,7 @@ public class HelperDAO extends SQLiteOpenHelper {
         };
 
         Cursor cursor = db.query(ContratoDAO.TabelaPasta.NOME_DA_TABELA,
-                colunas, "IdPasta = ?", new String [] {"%"+ idPasta + "%"}, null, null, null);
+                colunas, ContratoDAO.TabelaPasta.COLUNA_ID + "=?", new String [] { String.valueOf(idPasta) }, null, null, null);
 
         cursor.moveToFirst();
         Pasta p = new Pasta();

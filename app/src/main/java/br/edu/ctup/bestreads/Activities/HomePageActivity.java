@@ -50,17 +50,25 @@ public class HomePageActivity extends AppCompatActivity {
 
 
         //Init View
-        pastaRecyclerView = findViewById(R.id.recyclerView);
+       /* pastaRecyclerView = findViewById(R.id.recyclerView);
         pastaRecyclerView.setHasFixedSize(true);
         pastaLayoutManager = new LinearLayoutManager(this);
         pastaAdapter = new PastaAdapter(pastasArrayList);
         pastaRecyclerView.setLayoutManager(pastaLayoutManager);
         pastaRecyclerView.setAdapter(pastaAdapter);
+        */
         //Setup Search bar
         materialSearchBar.setHint("Qual pasta você procura?");
         materialSearchBar.setCardViewElevation(10);
-        loadSugestList();
 
+        //Carregamento do Adapter
+        loadAdapter();
+
+        //Carregamento dos botãos do adapter
+        loadBottonsAdapter();
+
+        loadSugestList();
+/*
         pastaAdapter.setOnItemClickListener(new PastaAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -77,7 +85,7 @@ public class HomePageActivity extends AppCompatActivity {
                 editItem(position);
             }
         });
-
+*/
 
         materialSearchBar.addTextChangeListener(new TextWatcher() {
             @Override
@@ -107,6 +115,7 @@ public class HomePageActivity extends AppCompatActivity {
                 if(!enabled){
                     pastaAdapter = new PastaAdapter(PastaDAO.listarPastas(getBaseContext()));
                     pastaRecyclerView.setAdapter(pastaAdapter);
+                    loadBottonsAdapter();
                 }
             }
 
@@ -123,9 +132,43 @@ public class HomePageActivity extends AppCompatActivity {
 
     }
 
+    private void loadAdapter()
+    {
+        pastasArrayList = new ArrayList<Pasta>();
+        pastasArrayList =  PastaDAO.listarPastas(this);
+        pastaRecyclerView = findViewById(R.id.recyclerView);
+        pastaRecyclerView.setHasFixedSize(true);
+        pastaLayoutManager = new LinearLayoutManager(this);
+        pastaAdapter = new PastaAdapter(pastasArrayList);
+        pastaRecyclerView.setLayoutManager(pastaLayoutManager);
+        pastaRecyclerView.setAdapter(pastaAdapter);
+    }
+
+    private void loadBottonsAdapter()
+    {
+        pastaAdapter.setOnItemClickListener(new PastaAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                openFolder(position);
+            }
+
+            @Override
+            public void onDeleteClick(int position) {
+                deleteItem(position);
+            }
+
+            @Override
+            public void onEditClick(int position) {
+                editItem(position);
+            }
+        });
+    }
+
+
     private void startSearch(String text) {
         pastaAdapter = new PastaAdapter(PastaDAO.encontrarPastaPorNome(this,text));
         pastaRecyclerView.setAdapter(pastaAdapter);
+        loadBottonsAdapter();
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
@@ -138,24 +181,22 @@ public class HomePageActivity extends AppCompatActivity {
         materialSearchBar.setLastSuggestions(suggestList);
     }
 
-    public void changeItem(int position, String text){
-        pastasArrayList.get(position).changeNomePasta(text);
-        pastaAdapter.notifyItemChanged(position);
+    public void openFolder(int position){
+        Pasta pasta = pastasArrayList.get(position);
+        Intent intentOrigem = new Intent(HomePageActivity.this, HomePastaActivity.class);
+        intentOrigem.putExtra("idPasta",pasta.getIdPasta());
+        startActivity(intentOrigem);
     }
 
     public void deleteItem(int position){
         Pasta pasta = pastasArrayList.get(position);
         PastaDAO.excluirPasta(this,pasta);
         Toast.makeText(this,"Exluído com Sucesso", Toast.LENGTH_SHORT).show();
-        pastasArrayList =  PastaDAO.listarPastas(this);
-        pastaRecyclerView = findViewById(R.id.recyclerView);
-        pastaRecyclerView.setHasFixedSize(true);
-        pastaLayoutManager = new LinearLayoutManager(this);
-        pastaAdapter = new PastaAdapter(pastasArrayList);
-        pastaRecyclerView.setLayoutManager(pastaLayoutManager);
-        pastaRecyclerView.setAdapter(pastaAdapter);
+        loadAdapter();
+        loadBottonsAdapter();
         pastaAdapter.notifyDataSetChanged();
         pastaAdapter.notifyItemChanged(position);
+
     }
 
     public void editItem(int position){
