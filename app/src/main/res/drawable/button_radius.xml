@@ -9,8 +9,8 @@
 
     <gradient
         android:angle="270"
-        android:startColor="#2e8fc2 "
-        android:endColor="#00A693"/>
+        android:startColor="#27B5BE "
+        android:endColor="#088C7D"/>
 
     // The desired corner radius. reduce it to keep it less rounded
     <corners android:radius="10dp" />

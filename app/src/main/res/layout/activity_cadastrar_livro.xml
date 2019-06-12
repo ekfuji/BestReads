@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.CadastrarLivroActivity"
+    android:background="@drawable/background4"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="15dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nome:"
+            android:textSize="22dp"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="6dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="Digite o nome do livro"
+            android:background="@drawable/background_radius"
+            android:id="@+id/txt_nome_livro"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Genero:"
+            android:textSize="22dp"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="6dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="Digite o genero do livro"
+            android:background="@drawable/background_radius"
+            android:id="@+id/txt_genero_livro"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Autor:"
+            android:textSize="22dp"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="6dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="Digite o autor do livro"
+            android:background="@drawable/background_radius"
+            android:id="@+id/txt_autor_livro"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="20dp">
+            <CheckBox android:id="@+id/checkbox_meat"
+                android:layout_width="wrap_content"
+                android:layout_height="59dp"
+                android:text="Lido"
+                android:textSize="18dp"
+                android:buttonTint="#7F7F7F"
+                android:background="@drawable/background_radius"
+                android:textColor="#7F7F7F"
+                android:paddingLeft="8dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="4dp"
+                android:text="Publicação:"
+                android:textSize="22dp"
+                android:textColor="@android:color/white"
+/>
+            <EditText
+                android:layout_width="130dp"
+                android:layout_height="60dp"
+                android:hint="Ano"
+
+                android:inputType="number"
+                android:background="@drawable/background_radius"
+                android:id="@+id/txt_ano_publicacao_livro"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="20dp">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Anexar imagem"
+                android:textColor="@android:color/white"
+                android:background="@drawable/button_radius"
+                android:layout_marginTop="10dp"
+                android:id="@+id/btn_anexar_img"/>
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="84dp"
+                android:src="@drawable/book_upload"/>
+        </LinearLayout>
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Salvar"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_radius"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="115dp"
+            android:id="@+id/btn_salvar_pasta"/>
+    </LinearLayout>
+</LinearLayout>

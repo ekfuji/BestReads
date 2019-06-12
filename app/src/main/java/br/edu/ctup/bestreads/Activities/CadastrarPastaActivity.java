@@ -12,7 +12,7 @@ import br.edu.ctup.bestreads.DAO.PastaDAO;
 import br.edu.ctup.bestreads.Model.Pasta;
 import br.edu.ctup.bestreads.R;
 
-public class CadastrarPasta extends AppCompatActivity {
+public class CadastrarPastaActivity extends AppCompatActivity {
 private EditText txtNomePasta;
 private Button btnSalvarPasta;
     @Override
@@ -35,7 +35,7 @@ private Button btnSalvarPasta;
 
         Toast.makeText(this, "Id: " +  id, Toast.LENGTH_SHORT).show();
 
-        Intent intentOrigem = new Intent(CadastrarPasta.this, HomePageActivity.class);
+        Intent intentOrigem = new Intent(CadastrarPastaActivity.this, HomePageActivity.class);
         startActivity(intentOrigem);
 
     }

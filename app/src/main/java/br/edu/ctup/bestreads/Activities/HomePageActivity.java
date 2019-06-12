@@ -3,9 +3,6 @@ package br.edu.ctup.bestreads.Activities;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Intent;
-import android.database.Cursor;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,17 +12,12 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.mancj.materialsearchbar.MaterialSearchBar;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import br.edu.ctup.bestreads.Adapter.PastaAdapter;
 import br.edu.ctup.bestreads.DAO.HelperDAO;
@@ -55,8 +47,6 @@ public class HomePageActivity extends AppCompatActivity {
         btn_excluir_pasta = (ImageView) findViewById(R.id.btn_excluir_pasta);
         btn_editar_pasta = (ImageView) findViewById(R.id.btn_editar_pasta);
         materialSearchBar = (MaterialSearchBar) findViewById(R.id.search_bar);
-
-        final String[] pastas = new String[pastasArrayList.size()];
 
 
         //Init View
@@ -175,7 +165,8 @@ public class HomePageActivity extends AppCompatActivity {
         intentOrigem.putExtra("idPasta",idPasta);
         startActivity(intentOrigem);
         pastaAdapter.notifyItemChanged(position);
-    }
+
+   }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -188,11 +179,8 @@ public class HomePageActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.add_pasta:
-                Intent intentOrigem = new Intent(HomePageActivity.this, CadastrarPasta.class);
+                Intent intentOrigem = new Intent(HomePageActivity.this, CadastrarPastaActivity.class);
                 startActivity(intentOrigem);
-                return true;
-            case R.id.buscar_pasta:
-                Toast.makeText(this, "Buscando Pasta", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

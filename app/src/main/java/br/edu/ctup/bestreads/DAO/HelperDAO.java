@@ -6,11 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import br.edu.ctup.bestreads.Activities.CadastrarPasta;
 import br.edu.ctup.bestreads.Model.Acervo;
 import br.edu.ctup.bestreads.Model.Autor;
 import br.edu.ctup.bestreads.Model.Avaliacao;
@@ -289,6 +287,32 @@ public class HelperDAO extends SQLiteOpenHelper {
         values.put(ContratoDAO.TabelaLivro.COLUNA_ID_GENERO, livro.getIdGenero());
         values.put(ContratoDAO.TabelaLivro.COLUNA_ID_AUTOR, livro.getIdAutor());
         return db.insert(ContratoDAO.TabelaPasta.NOME_DA_TABELA, null, values);
+    }
+
+    public ArrayList<Livro> listarLivros() {
+        ArrayList<Livro> livros = new ArrayList<Livro>();
+        SQLiteDatabase db = getReadableDatabase();
+
+        //Definir quais colunas vão retornar da tabela
+        String[] colunas = {
+                ContratoDAO.TabelaLivro.COLUNA_ID,
+                ContratoDAO.TabelaLivro.COLUNA_NOME_LIVRO,
+        };
+
+        Cursor cursor = db.query(ContratoDAO.TabelaLivro.NOME_DA_TABELA,
+                colunas, null, null, null, null, null);
+
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            do {
+                Livro l = new Livro();
+                l.setIdLivro(cursor.getInt(0));
+                l.setNome(cursor.getString(1));
+
+                livros.add(l);
+            } while (cursor.moveToNext());
+        }
+        return livros;
     }
 
     public long cadastrarAvaliacao(Avaliacao avaliacao){
