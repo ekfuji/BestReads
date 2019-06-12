@@ -63,7 +63,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginTop="20dp">
-            <CheckBox android:id="@+id/checkbox_meat"
+            <CheckBox android:id="@+id/checkbox_lido"
                 android:layout_width="wrap_content"
                 android:layout_height="59dp"
                 android:text="Lido"
@@ -71,7 +71,8 @@
                 android:buttonTint="#7F7F7F"
                 android:background="@drawable/background_radius"
                 android:textColor="#7F7F7F"
-                android:paddingLeft="8dp"/>
+                android:paddingLeft="8dp"
+                android:onClick="checkedLlido"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -102,7 +103,8 @@
                 android:textColor="@android:color/white"
                 android:background="@drawable/button_radius"
                 android:layout_marginTop="10dp"
-                android:id="@+id/btn_anexar_img"/>
+                android:id="@+id/btn_anexar_img"
+                android:onClick="anexarImagem"/>
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -117,6 +119,7 @@
             android:background="@drawable/button_radius"
             android:layout_marginTop="30dp"
             android:layout_marginLeft="115dp"
-            android:id="@+id/btn_salvar_pasta"/>
+            android:id="@+id/btn_salvar_livro"
+            android:onClick="salvarLivro"/>
     </LinearLayout>
 </LinearLayout>
