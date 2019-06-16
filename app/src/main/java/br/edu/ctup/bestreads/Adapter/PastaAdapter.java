@@ -14,7 +14,7 @@ import br.edu.ctup.bestreads.Model.Pasta;
 import br.edu.ctup.bestreads.R;
 
 public class PastaAdapter extends RecyclerView.Adapter<PastaAdapter.HomePageViewHolder> {
-    private ArrayList<Pasta> acervoPastas;
+    public ArrayList<Pasta> acervoPastas;
     private OnItemClickListener itemListener;
 
 

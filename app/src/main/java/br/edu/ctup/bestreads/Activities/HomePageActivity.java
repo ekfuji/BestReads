@@ -1,7 +1,9 @@
 package br.edu.ctup.bestreads.Activities;
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.OnLifecycleEvent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,6 +31,7 @@ public class HomePageActivity extends AppCompatActivity {
     private  ArrayList<Pasta> pastasArrayList;
     private ArrayList<String> suggestList = new ArrayList<>();
     private HelperDAO helper;
+    private AlertDialog alerta;
     private RecyclerView pastaRecyclerView;
     private MaterialSearchBar materialSearchBar;
     private PastaAdapter pastaAdapter;
@@ -49,15 +52,6 @@ public class HomePageActivity extends AppCompatActivity {
         materialSearchBar = (MaterialSearchBar) findViewById(R.id.search_bar);
 
 
-        //Init View
-       /* pastaRecyclerView = findViewById(R.id.recyclerView);
-        pastaRecyclerView.setHasFixedSize(true);
-        pastaLayoutManager = new LinearLayoutManager(this);
-        pastaAdapter = new PastaAdapter(pastasArrayList);
-        pastaRecyclerView.setLayoutManager(pastaLayoutManager);
-        pastaRecyclerView.setAdapter(pastaAdapter);
-        */
-        //Setup Search bar
         materialSearchBar.setHint("Qual pasta você procura?");
         materialSearchBar.setCardViewElevation(10);
 
@@ -68,24 +62,6 @@ public class HomePageActivity extends AppCompatActivity {
         loadBottonsAdapter();
 
         loadSugestList();
-/*
-        pastaAdapter.setOnItemClickListener(new PastaAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                changeItem(position, "Rodolfo Lindo");
-            }
-
-            @Override
-            public void onDeleteClick(int position) {
-                deleteItem(position);
-            }
-
-            @Override
-            public void onEditClick(int position) {
-                editItem(position);
-            }
-        });
-*/
 
         materialSearchBar.addTextChangeListener(new TextWatcher() {
             @Override
@@ -154,12 +130,14 @@ public class HomePageActivity extends AppCompatActivity {
 
             @Override
             public void onDeleteClick(int position) {
-                deleteItem(position);
+                ArrayList<Pasta> itens = pastaAdapter.acervoPastas;
+                exibirAlertDialogExclusaoPasta(position, itens);
             }
 
             @Override
             public void onEditClick(int position) {
-                editItem(position);
+                ArrayList<Pasta> itens = pastaAdapter.acervoPastas;
+                editItem(position, itens);
             }
         });
     }
@@ -188,10 +166,11 @@ public class HomePageActivity extends AppCompatActivity {
         startActivity(intentOrigem);
     }
 
-    public void deleteItem(int position){
-        Pasta pasta = pastasArrayList.get(position);
+    public void deleteItem(int position, ArrayList<Pasta> itens){
+        int idPasta = itens.get(position).getIdPasta();
+        Pasta pasta = PastaDAO.BuscarPastaPorId(this, idPasta);
         PastaDAO.excluirPasta(this,pasta);
-        Toast.makeText(this,"Exluído com Sucesso", Toast.LENGTH_SHORT).show();
+        exibirAlertDialogExclusaoPastaComSucesso();
         loadAdapter();
         loadBottonsAdapter();
         pastaAdapter.notifyDataSetChanged();
@@ -199,11 +178,12 @@ public class HomePageActivity extends AppCompatActivity {
 
     }
 
-    public void editItem(int position){
-        int idPasta = pastasArrayList.get(position).getIdPasta();
+    public void editItem(int position, ArrayList<Pasta> itens){
+        int idPasta = itens.get(position).getIdPasta();
+        Pasta pasta = PastaDAO.BuscarPastaPorId(this, idPasta);
         Toast.makeText(this, String.valueOf(idPasta), Toast.LENGTH_SHORT).show();
         Intent intentOrigem = new Intent(HomePageActivity.this, EditarPastaActivity.class);
-        intentOrigem.putExtra("idPasta",idPasta);
+        intentOrigem.putExtra("Pasta",pasta);
         startActivity(intentOrigem);
         pastaAdapter.notifyItemChanged(position);
 
@@ -227,6 +207,51 @@ public class HomePageActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    private void exibirAlertDialogExclusaoPasta(final int position, final ArrayList<Pasta> itens) {
+        //Cria o gerador do AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //define o titulo
+        builder.setTitle("ATENÇÃO");
+        //define a mensagem
+        String nomeDaPasta = itens.get(position).getNomePasta();
+        builder.setMessage("Deseja realmente deletar a pasta " + nomeDaPasta + "?");
+        //define um botão como positivo
+        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                deleteItem(position, itens);
+            }
+        });
+        //define um botão como negativo.
+        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                alerta.dismiss();
+            }
+        });
+        //cria o AlertDialog
+        alerta = builder.create();
+        //Exibe
+        alerta.show();
+    }
+
+    private void exibirAlertDialogExclusaoPastaComSucesso() {
+        //Cria o gerador do AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //define o titulo
+        builder.setTitle("Sucesso");
+        //define a mensagem
+        builder.setMessage("Pasta excluída com sucesso!");
+        //define um botão como positivo
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                alerta.dismiss();
+            }
+        });
+        //cria o AlertDialog
+        alerta = builder.create();
+        //Exibe
+        alerta.show();
     }
 
 }
