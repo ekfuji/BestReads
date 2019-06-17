@@ -1,15 +1,17 @@
 package br.edu.ctup.bestreads.Model;
 
+import android.graphics.Bitmap;
+
 public class Livro {
     private int idLivro;
     private String nome;
     private String anoPublicacao;
     private int lido;
-    private String fotoLivro;
+    private byte[] fotoLivro;
     private int idGenero;
     private int idAutor;
 
-    public Livro(int idLivro, String nome, String anoPublicacao, int lido, String fotoLivro, int idGenero, int idAutor) {
+    public Livro(int idLivro,int idPasta, String nome, String anoPublicacao, int lido, byte[] fotoLivro, Bitmap imgBitmap, int idGenero, int idAutor) {
         this.idLivro = idLivro;
         this.nome = nome;
         this.anoPublicacao = anoPublicacao;
@@ -54,11 +56,11 @@ public class Livro {
         this.lido = lido;
     }
 
-    public String getFotoLivro() {
+    public byte[] getFotoLivro() {
         return fotoLivro;
     }
 
-    public void setFotoLivro(String fotoLivro) {
+    public void setFotoLivro(byte[] fotoLivro) {
         this.fotoLivro = fotoLivro;
     }
 

@@ -1,5 +1,7 @@
 package br.edu.ctup.bestreads.Adapter;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,7 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import br.edu.ctup.bestreads.Model.Livro;
@@ -35,7 +41,7 @@ public ArrayList<Livro> acervoLivros;
     @NonNull
     @Override
     public LivroViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.activity_home_pasta, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view_livro, viewGroup, false);
         LivroViewHolder livroViewHolder = new LivroViewHolder(view);
         return  livroViewHolder;
     }
@@ -43,11 +49,24 @@ public ArrayList<Livro> acervoLivros;
     @Override
     public void onBindViewHolder(@NonNull LivroViewHolder livroViewHolder, int position) {
         Livro livroAtual = acervoLivros.get(position);
-
-        livroViewHolder.fotoLivro.setImageResource(livroAtual.getFotoLivro().indexOf(position));
         //Pede um int mas como faremos para salvar no banco dps carregar?
         livroViewHolder.nomeLivro.setText(livroAtual.getNome());
-        //livroViewHolder.autorLivro.setText(livroAtual.getIdAutor());
+        livroViewHolder.autorLivro.setText(String.valueOf(livroAtual.getIdAutor()));
+        //livroViewHolder.fotoLivro.setImageResource(livroAtual.getFotoLivro().indexOf(position));
+        try{
+            /*ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(livroAtual.getFotoLivro());
+            Bitmap bitmap = BitmapFactory.decodeStream(arrayInputStream);*/
+            Bitmap bitmap = BitmapFactory.decodeByteArray(livroAtual.getFotoLivro(),0,livroAtual.getFotoLivro().length);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream(bitmap.getWidth() * bitmap.getHeight());
+            if(bitmap.compress(Bitmap.CompressFormat.PNG,100,stream)){
+                livroViewHolder.fotoLivro.setImageBitmap(bitmap);
+            }
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         //Verificar como faz para pegar nome do Autor se não conseguirmos retirar no card view
     }
 
