@@ -83,9 +83,9 @@ public class CadastrarLivroActivity extends AppCompatActivity {
         livro.setAnoPublicacao(txtAnoLivro.getText().toString());
 
         try {
-            imgLivro = converterImagemViewParaByte();
+              imgLivro = converterImagemViewParaByte();
         }
-        catch (Exception e){
+         catch (Exception e){
          e.printStackTrace();
         }
 

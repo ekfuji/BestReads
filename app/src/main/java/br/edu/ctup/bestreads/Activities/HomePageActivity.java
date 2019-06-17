@@ -59,7 +59,7 @@ public class HomePageActivity extends AppCompatActivity {
         loadAdapter();
 
         //Carregamento dos botãos do adapter
-        loadBottonsAdapter();
+       loadBottonsAdapter();
 
         loadSugestList();
 
