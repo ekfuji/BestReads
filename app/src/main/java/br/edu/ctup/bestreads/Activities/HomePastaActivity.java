@@ -36,8 +36,13 @@ private static int idPasta;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent pegarDado = getIntent();
+        idPasta = pegarDado.getIntExtra("idPasta",0);
+        Pasta pasta = PastaDAO.BuscarPastaPorId(this,idPasta);
+
         livrosArrayList = new ArrayList<Livro>();
-        livrosArrayList = LivroDAO.listarLivros(this);
+        livrosArrayList = LivroDAO.listarLivrosPorPasta(this,idPasta);
+        //livrosArrayList = LivroDAO.listarLivros(this);
         setContentView(R.layout.activity_home_pasta);
 
         livroRecyclerView = findViewById(R.id.recyclerViewLivros);
@@ -47,9 +52,6 @@ private static int idPasta;
         livroRecyclerView.setLayoutManager(livroLayoutManager);
         livroRecyclerView.setAdapter(livroAdapter);
 
-        Intent pegarDado = getIntent();
-        idPasta = pegarDado.getIntExtra("idPasta",0);
-        Pasta pasta = PastaDAO.BuscarPastaPorId(this,idPasta);
 
         Toast.makeText(HomePastaActivity.this, pasta.getNomePasta(), Toast.LENGTH_SHORT).show();
 

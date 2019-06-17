@@ -21,7 +21,7 @@ public class HelperDAO extends SQLiteOpenHelper {
     private  static  final int VERSION = 1;
     private static final String TIPO_TEXTO = " TEXT";
     private static final String TIPO_INTEIRO = " INTEGER";
-    private static final String TIPO_BLOB = "BLOB";
+    private static final String TIPO_BLOB = " BLOB";
     private static final String VIRGULA = ", ";
 
 
@@ -228,6 +228,51 @@ public class HelperDAO extends SQLiteOpenHelper {
         return pastas;
     }
 
+
+    public Genero buscarGeneroPorNome(String nomeGenero){
+        SQLiteDatabase db = getReadableDatabase();
+        //Definir quais colunas vão retornar da tabela
+        String[] colunas = {
+                ContratoDAO.TabelaGenero.COLUNA_ID,
+                ContratoDAO.TabelaGenero.COLUNA_NOME_GENERO,
+        };
+
+        Cursor cursor = db.query(ContratoDAO.TabelaGenero.NOME_DA_TABELA,
+                colunas, ContratoDAO.TabelaGenero.COLUNA_NOME_GENERO+ "=?", new String [] { nomeGenero }, null, null, null);
+
+        cursor.moveToFirst();
+        Genero g = new Genero();
+        if (cursor.getCount() > 0) {
+            do {
+                g.setIdGenero(cursor.getInt(0));
+                g.setNomeGenero(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+        return g;
+    }
+
+    public Autor buscarAutorPorNome(String nomeAutor){
+        SQLiteDatabase db = getReadableDatabase();
+        //Definir quais colunas vão retornar da tabela
+        String[] colunas = {
+                ContratoDAO.TabelaAutor.COLUNA_ID,
+                ContratoDAO.TabelaAutor.COLUNA_NOME_AUTOR,
+        };
+
+        Cursor cursor = db.query(ContratoDAO.TabelaAutor.NOME_DA_TABELA,
+                colunas, ContratoDAO.TabelaAutor.COLUNA_NOME_AUTOR+ "=?", new String [] { nomeAutor }, null, null, null);
+
+        cursor.moveToFirst();
+        Autor a = new Autor();
+        if (cursor.getCount() > 0) {
+            do {
+                a.setIdAutor(cursor.getInt(0));
+                a.setNomeAutor(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+        return a;
+    }
+
     public Pasta buscarPastaPorId(int idPasta){
         SQLiteDatabase db = getReadableDatabase();
     //Definir quais colunas vão retornar da tabela
@@ -286,8 +331,73 @@ public class HelperDAO extends SQLiteOpenHelper {
         values.put(ContratoDAO.TabelaLivro.COLUNA_FOTO_LIVRO, livro.getFotoLivro());
         values.put(ContratoDAO.TabelaLivro.COLUNA_ID_GENERO, livro.getIdGenero());
         values.put(ContratoDAO.TabelaLivro.COLUNA_ID_AUTOR, livro.getIdAutor());
-        return db.insert(ContratoDAO.TabelaPasta.NOME_DA_TABELA, null, values);
+        return db.insert(ContratoDAO.TabelaLivro.NOME_DA_TABELA, null, values);
     }
+
+    public ArrayList<Livro> listarLivrosPorPasta(int idPasta){
+        ArrayList<Livro> livros = new ArrayList<Livro>();
+        SQLiteDatabase db = getReadableDatabase();
+
+
+        //Definir quais colunas vão retornar da tabela
+       /* String[] colunas = {
+                ContratoDAO.TabelaLivro.COLUNA_ID,
+                ContratoDAO.TabelaLivro.COLUNA_NOME_LIVRO,
+        };*/
+
+        Cursor cursor = db.rawQuery("Select * From Livro l Join Acervo a ON a.IdLivro = l.Id Join " +
+                "Pasta p ON a.IdPasta = p.Id where a.IdPasta =?",new String[] {String.valueOf(idPasta)});
+                cursor.moveToFirst();
+        Livro l = new Livro();
+
+
+        if (cursor.getCount() > 0) {
+            do {
+                l.setIdLivro(cursor.getInt(0));
+                l.setNome(cursor.getString(1));
+                l.setLido(cursor.getInt(2));
+                l.setAnoPublicacao(cursor.getString(3));
+                l.setFotoLivro(cursor.getBlob(4));
+                l.setIdAutor(cursor.getInt(5));
+                l.setIdGenero(cursor.getInt(6));
+                livros.add(l);
+            } while (cursor.moveToNext());
+        }
+        return livros;
+    }
+
+    public Livro buscarLivroPorNome(String nomeLivro){
+        SQLiteDatabase db = getReadableDatabase();
+        //Definir quais colunas vão retornar da tabela
+        String[] colunas = {
+                ContratoDAO.TabelaLivro.COLUNA_ID,
+                ContratoDAO.TabelaLivro.COLUNA_NOME_LIVRO,
+                ContratoDAO.TabelaLivro.COLUNA_LIDO,
+                ContratoDAO.TabelaLivro.COLUNA_ANO_PUBLICACAO,
+                ContratoDAO.TabelaLivro.COLUNA_FOTO_LIVRO,
+                ContratoDAO.TabelaLivro.COLUNA_ID_AUTOR,
+                ContratoDAO.TabelaLivro.COLUNA_ID_GENERO
+        };
+
+        Cursor cursor = db.query(ContratoDAO.TabelaLivro.NOME_DA_TABELA,
+                colunas, ContratoDAO.TabelaLivro.COLUNA_NOME_LIVRO + "=?", new String [] { nomeLivro }, null, null, null);
+
+        cursor.moveToFirst();
+        Livro l = new Livro();
+        if (cursor.getCount() > 0) {
+            do {
+                l.setIdLivro(cursor.getInt(0));
+                l.setNome(cursor.getString(1));
+                l.setLido(cursor.getInt(2));
+                l.setAnoPublicacao(cursor.getString(3));
+                l.setFotoLivro(cursor.getBlob(4));
+                l.setIdAutor(cursor.getInt(5));
+                l.setIdGenero(cursor.getInt(6));
+            } while (cursor.moveToNext());
+        }
+        return l;
+    }
+
 
     public ArrayList<Livro> listarLivros() {
         ArrayList<Livro> livros = new ArrayList<Livro>();
@@ -297,6 +407,8 @@ public class HelperDAO extends SQLiteOpenHelper {
         String[] colunas = {
                 ContratoDAO.TabelaLivro.COLUNA_ID,
                 ContratoDAO.TabelaLivro.COLUNA_NOME_LIVRO,
+                ContratoDAO.TabelaLivro.COLUNA_FOTO_LIVRO,
+                ContratoDAO.TabelaLivro.COLUNA_ID_AUTOR
         };
 
         Cursor cursor = db.query(ContratoDAO.TabelaLivro.NOME_DA_TABELA,
@@ -308,7 +420,8 @@ public class HelperDAO extends SQLiteOpenHelper {
                 Livro l = new Livro();
                 l.setIdLivro(cursor.getInt(0));
                 l.setNome(cursor.getString(1));
-
+                l.setFotoLivro(cursor.getBlob(2));
+                l.setIdAutor(cursor.getInt(3));
                 livros.add(l);
             } while (cursor.moveToNext());
         }
