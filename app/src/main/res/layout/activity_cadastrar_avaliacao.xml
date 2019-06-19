@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.CadastrarAvaliacaoActivity"
+    android:background="@drawable/background4"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nota:"
+            android:textSize="22dp"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="6dp"/>
+
+ <RatingBar
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:numStars="5"
+     android:clickable="true"
+     android:id="@+id/rating_nota_livro"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Data:"
+            android:textSize="22dp"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="6dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:focusable="false"
+            android:layout_height="60dp"
+            android:hint="00/00/0000"
+            android:background="@drawable/background_radius"
+            android:id="@+id/txt_data_avaliacao"
+            android:onClick="onClickDataAvaliacao"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Parecer:"
+            android:textSize="22dp"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="6dp" />
+
+        <EditText
+            android:id="@+id/txt_autor_livro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_radius"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:hint="Fale um pouco sobre o que você achou
+            do livro ou escreva uma pequena resenha" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="20dp"/>
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Salvar"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_radius"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="115dp"
+            android:id="@+id/btn_salvar_avaliacao" />
+    </LinearLayout>
+</LinearLayout>

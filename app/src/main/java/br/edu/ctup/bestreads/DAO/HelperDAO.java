@@ -429,7 +429,7 @@ public class HelperDAO extends SQLiteOpenHelper {
                 ContratoDAO.TabelaLivro.COLUNA_NOME_LIVRO,
         };*/
 
-        Cursor cursor = db.rawQuery("Select * From Livro l Join Acervo a ON a.IdLivro = l.Id Join " +
+        Cursor cursor = db.rawQuery("Select * From Livro l Join Acervo a ON a.IdLivro = l.Id Join Autor au ON l.IdAutor = au.Id Join " +
                 "Pasta p ON a.IdPasta = p.Id where a.IdPasta =?",new String[] {String.valueOf(idPasta)});
                 cursor.moveToFirst();
 
@@ -445,6 +445,7 @@ public class HelperDAO extends SQLiteOpenHelper {
                 l.setFotoLivro(cursor.getBlob(4));
                 l.setIdAutor(cursor.getInt(5));
                 l.setIdGenero(cursor.getInt(6));
+                l.setNomeAutor(cursor.getString(12));
                 livros.add(l);
             } while (cursor.moveToNext());
         }
