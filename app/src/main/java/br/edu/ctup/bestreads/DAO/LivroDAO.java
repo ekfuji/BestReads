@@ -12,8 +12,6 @@ public class LivroDAO {
 
     public static long cadastrarLivro(Context context, Livro livro){
         HelperDAO helper = new HelperDAO(context);
-        livro.setNome(Normalizer.normalize(livro.getNome(), Normalizer.Form.NFD)
-                .replaceAll("[^\\p{ASCII}]", "").toUpperCase());
         return helper.cadastrarLivro(livro);
     }
 
@@ -34,8 +32,6 @@ public class LivroDAO {
 
     public static Livro buscarLivroPorNome(Context context, String nomeLivro){
         HelperDAO helper = new HelperDAO(context);
-        nomeLivro = Normalizer.normalize(nomeLivro, Normalizer.Form.NFD)
-                .replaceAll("[^\\p{ASCII}]", "").toUpperCase();
         return helper.buscarLivroPorNome(nomeLivro);
     }
 

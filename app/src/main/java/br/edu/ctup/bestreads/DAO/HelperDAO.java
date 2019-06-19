@@ -461,8 +461,8 @@ public class HelperDAO extends SQLiteOpenHelper {
                 l.setLido(cursor.getInt(2));
                 l.setAnoPublicacao(cursor.getString(3));
                 l.setFotoLivro(cursor.getBlob(4));
-                l.setNomeAutor(cursor.getString(5));
-                l.setNomeGenero(cursor.getString(6));
+                l.setNomeGenero(cursor.getString(5));
+                l.setNomeAutor(cursor.getString(6));
             } while (cursor.moveToNext());
         }
         return l;
@@ -518,12 +518,12 @@ public class HelperDAO extends SQLiteOpenHelper {
         values.put(ContratoDAO.TabelaLivro.COLUNA_FOTO_LIVRO,l.getFotoLivro());
 
 
-        String condicao = ContratoDAO.TabelaPasta.COLUNA_ID + " = ?";
+        String condicao = ContratoDAO.TabelaLivro.COLUNA_ID + " = ?";
         String[] argumentos = {
                 String.valueOf(l.getIdLivro())
         };
 
-        return db.update(ContratoDAO.TabelaPasta.NOME_DA_TABELA, values,
+        return db.update(ContratoDAO.TabelaLivro.NOME_DA_TABELA, values,
                 condicao, argumentos);
     }
 

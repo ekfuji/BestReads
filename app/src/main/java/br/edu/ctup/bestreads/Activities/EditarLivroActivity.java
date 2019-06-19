@@ -97,6 +97,14 @@ public class EditarLivroActivity extends AppCompatActivity {
             autor = AutorDAO.buscarAutorPorNome(this,nomeAutor);
         }
         livro.setIdAutor(autor.getIdAutor());
+
+        if(checkboxLido.isChecked()){
+            idLido = 1;
+        }
+        else {
+            idLido = 0;
+        }
+
         livro.setLido(idLido);
         livro.setAnoPublicacao(txtAnoLivro.getText().toString());
 
