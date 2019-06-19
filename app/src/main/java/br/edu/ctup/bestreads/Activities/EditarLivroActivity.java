@@ -1,15 +1,18 @@
 package br.edu.ctup.bestreads.Activities;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,12 +30,14 @@ import br.edu.ctup.bestreads.Model.Genero;
 import br.edu.ctup.bestreads.Model.Livro;
 import br.edu.ctup.bestreads.R;
 
-public class CadastrarLivroActivity extends AppCompatActivity {
+public class EditarLivroActivity extends AppCompatActivity {
 
+    private AlertDialog alerta;
+    private Livro livro;
     private TextView txtNomeLivro, txtGeneroLivro, txtAutorLivro, txtAnoLivro;
     private CheckBox checkboxLido;
     private ImageView imageLivro;
-    private int idPasta;
+    private int idPasta, idLivro;
     private int idLido = 0;
     public byte [] imgLivro;
     private Bitmap imgBitMap;
@@ -41,23 +46,36 @@ public class CadastrarLivroActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cadastrar_livro);
+        setContentView(R.layout.activity_editar_livro);
         Intent getDados = getIntent();
         idPasta = getDados.getIntExtra("idPasta",0);
-        txtNomeLivro =  findViewById(R.id.txt_nome_livro);
-        txtGeneroLivro = findViewById(R.id.txt_genero_livro);
-        txtAnoLivro = findViewById(R.id.txt_ano_publicacao_livro);
-        txtAutorLivro = findViewById(R.id.txt_autor_livro);
-        checkboxLido = findViewById(R.id.checkbox_lido);
-        imageLivro = findViewById(R.id.image_livro);
+        idLivro = getDados.getIntExtra("idLivro",0);
 
+        livro = LivroDAO.buscarLivroAutorGenero(this,idLivro);
+
+        txtNomeLivro =  findViewById(R.id.txt_nome_livro_editado);
+        txtGeneroLivro = findViewById(R.id.txt_genero_livro_editado);
+        txtAnoLivro = findViewById(R.id.txt_ano_publicacao_livro_editado);
+        txtAutorLivro = findViewById(R.id.txt_autor_livro_editado);
+        checkboxLido = findViewById(R.id.checkbox_lido_editado);
+        imageLivro = findViewById(R.id.image_livro_editado);
+
+        txtNomeLivro.setText(livro.getNome());
+        txtGeneroLivro.setText(livro.getNomeGenero());
+        txtAutorLivro.setText(livro.getNomeAutor());
+        txtAnoLivro.setText(livro.getAnoPublicacao());
+        imageLivro.setImageBitmap(converterImagemParaBitMap());
+
+        if(livro.getLido() == 1){
+            checkboxLido.setChecked(true);
+        }
+
+        Toast.makeText(this, String.valueOf(idPasta), Toast.LENGTH_SHORT).show();
     }
 
-    public void salvarLivro(View view) {
-        Livro livro = new Livro();
+    public void editarLivro(View view) {
         Autor autor = new Autor();
         Genero genero = new Genero();
-        Acervo acervo = new Acervo();
 
 
         livro.setNome(txtNomeLivro.getText().toString());
@@ -90,16 +108,9 @@ public class CadastrarLivroActivity extends AppCompatActivity {
         }
 
         livro.setFotoLivro(imgLivro);
-        LivroDAO.cadastrarLivro(this,livro);
+        LivroDAO.editarLivro(this,livro);
 
-        livro = LivroDAO.buscarLivroPorNome(this, txtNomeLivro.getText().toString());
-
-        acervo.setIdLivro(livro.getIdLivro());
-        acervo.setIdPasta(idPasta);
-
-        LivroDAO.cadastarLivroAcervo(this,acervo);
-
-        Intent intentOrigem = new Intent(CadastrarLivroActivity.this, HomePastaActivity.class);
+        Intent intentOrigem = new Intent(EditarLivroActivity.this, HomePastaActivity.class);
         intentOrigem.putExtra("idPasta",idPasta);
         startActivity(intentOrigem);
     }
@@ -113,7 +124,7 @@ public class CadastrarLivroActivity extends AppCompatActivity {
         return byteArray;
     }
 
-    public void anexarImagem(View view) {
+    public void anexarImagemEditada(View view) {
         Intent i = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(Intent.createChooser(i, "Selecione uma imagem"), PICK_IMAGE);
@@ -141,6 +152,22 @@ public class CadastrarLivroActivity extends AppCompatActivity {
                 }
                 Toast.makeText(getApplicationContext(), selectedImage.toString(), Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private Bitmap converterImagemParaBitMap(){
+        try{
+            /*ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(livroAtual.getFotoLivro());
+            Bitmap bitmap = BitmapFactory.decodeStream(arrayInputStream);*/
+            Bitmap bitmap = BitmapFactory.decodeByteArray(livro.getFotoLivro(),0,livro.getFotoLivro().length);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream(bitmap.getWidth() * bitmap.getHeight());
+            bitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
+            return bitmap;
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
         }
     }
 }

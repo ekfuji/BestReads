@@ -20,17 +20,63 @@ import br.edu.ctup.bestreads.Model.Livro;
 import br.edu.ctup.bestreads.R;
 
 public class LivroAdapter extends RecyclerView.Adapter<LivroAdapter.LivroViewHolder> {
-public ArrayList<Livro> acervoLivros;
+    public ArrayList<Livro> acervoLivros;
+    private OnItemClickListener itemListener;
+
+    public interface  OnItemClickListener {
+        void onItemClick(int position);
+        void onDeleteClick(int position);
+        void onEditClick(int position);
+    }
+
+
+    public void setOnItemClickListner(OnItemClickListener listner){ itemListener = listner;}
 
     public static class LivroViewHolder extends RecyclerView.ViewHolder{
-        public ImageView fotoLivro;
+        public ImageView fotoLivro, btnExcluirLivro, btnEditarLivro;
         public TextView nomeLivro, autorLivro;
 
-        public LivroViewHolder(@NonNull View itemView) {
+        public LivroViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             fotoLivro = itemView.findViewById(R.id.foto_livro);
             nomeLivro = itemView.findViewById(R.id.nome_livro);
             autorLivro = itemView.findViewById(R.id.nome_autor_livro);
+            btnEditarLivro = itemView.findViewById(R.id.btn_editar_livro);
+            btnExcluirLivro = itemView.findViewById(R.id.btn_excluir_livro);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener!=null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
+            btnEditarLivro.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener!=null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.onEditClick(position);
+                        }
+                    }
+                }
+            });
+
+            btnExcluirLivro.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener!=null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.onDeleteClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -42,7 +88,7 @@ public ArrayList<Livro> acervoLivros;
     @Override
     public LivroViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view_livro, viewGroup, false);
-        LivroViewHolder livroViewHolder = new LivroViewHolder(view);
+        LivroViewHolder livroViewHolder = new LivroViewHolder(view,itemListener);
         return  livroViewHolder;
     }
 
@@ -51,7 +97,7 @@ public ArrayList<Livro> acervoLivros;
         Livro livroAtual = acervoLivros.get(position);
         //Pede um int mas como faremos para salvar no banco dps carregar?
         livroViewHolder.nomeLivro.setText(livroAtual.getNome());
-        livroViewHolder.autorLivro.setText(livroAtual.getNomeAutor());
+        livroViewHolder.autorLivro.setText(String.valueOf(livroAtual.getNomeAutor()));
         //livroViewHolder.fotoLivro.setImageResource(livroAtual.getFotoLivro().indexOf(position));
         try{
             /*ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(livroAtual.getFotoLivro());
@@ -66,6 +112,8 @@ public ArrayList<Livro> acervoLivros;
         }catch (Exception e){
             e.printStackTrace();
         }
+
+        //Verificar como faz para pegar nome do Autor se não conseguirmos retirar no card view
     }
 
     @Override

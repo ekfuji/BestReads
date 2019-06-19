@@ -6,25 +6,42 @@ public class Livro {
     private int idLivro;
     private String nome;
     private String anoPublicacao;
-    private String nomeAutor;
     private int lido;
     private byte[] fotoLivro;
+    private String nomeAutor;
+    private String nomeGenero;
     private int idGenero;
     private int idAutor;
 
+    public Livro(int idLivro, String nome, String anoPublicacao, int lido, byte[] fotoLivro, String nomeAutor, String nomeGenero, int idGenero, int idAutor) {
+        this.idLivro = idLivro;
+        this.nome = nome;
+        this.anoPublicacao = anoPublicacao;
+        this.lido = lido;
+        this.fotoLivro = fotoLivro;
+        this.nomeAutor = nomeAutor;
+        this.nomeGenero = nomeGenero;
+        this.idGenero = idGenero;
+        this.idAutor = idAutor;
+    }
 
     public Livro() {
     }
 
-    public Livro(int idLivro, String nome, String anoPublicacao, String nomeAutor, int lido, byte[] fotoLivro, int idGenero, int idAutor) {
-        this.idLivro = idLivro;
-        this.nome = nome;
-        this.anoPublicacao = anoPublicacao;
+    public String getNomeGenero() {
+        return nomeGenero;
+    }
+
+    public void setNomeGenero(String nomeGenero) {
+        this.nomeGenero = nomeGenero;
+    }
+
+    public String getNomeAutor() {
+        return nomeAutor;
+    }
+
+    public void setNomeAutor(String nomeAutor) {
         this.nomeAutor = nomeAutor;
-        this.lido = lido;
-        this.fotoLivro = fotoLivro;
-        this.idGenero = idGenero;
-        this.idAutor = idAutor;
     }
 
     public int getIdLivro() {
@@ -49,14 +66,6 @@ public class Livro {
 
     public void setAnoPublicacao(String anoPublicacao) {
         this.anoPublicacao = anoPublicacao;
-    }
-
-    public String getNomeAutor() {
-        return nomeAutor;
-    }
-
-    public void setNomeAutor(String nomeAutor) {
-        this.nomeAutor = nomeAutor;
     }
 
     public int getLido() {

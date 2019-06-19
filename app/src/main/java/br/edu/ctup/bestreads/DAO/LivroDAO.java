@@ -38,4 +38,26 @@ public class LivroDAO {
                 .replaceAll("[^\\p{ASCII}]", "").toUpperCase();
         return helper.buscarLivroPorNome(nomeLivro);
     }
+
+    public static Livro BuscarLivroPorId(Context context, int idLivro){
+        HelperDAO helper = new HelperDAO(context);
+        return helper.buscarLivroPorId(idLivro);
+    }
+
+    public static long editarLivro(Context context, Livro livro){
+        HelperDAO helper = new HelperDAO(context);
+        return helper.alterarLivro(livro);
+    }
+
+    public static long excluirLivro(Context context, Livro livro) {
+        HelperDAO helper = new HelperDAO(context);
+        return helper.removerLivro(livro);
+    }
+
+    public static Livro buscarLivroAutorGenero(Context context, int idLivro){
+        HelperDAO helper = new HelperDAO(context);
+        Livro livro = LivroDAO.BuscarLivroPorId(context,idLivro);
+        return helper.buscarLivroAutorGenero(livro);
+    }
+
 }

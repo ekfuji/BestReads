@@ -28,7 +28,7 @@ public class HelperDAO extends SQLiteOpenHelper {
     private static final String SQL_CRIAR_TABELA_GENERO =
             "CREATE TABLE IF NOT EXISTS " + ContratoDAO.TabelaGenero.NOME_DA_TABELA + " (" +
                     ContratoDAO.TabelaGenero.COLUNA_ID + TIPO_INTEIRO + " PRIMARY KEY AUTOINCREMENT" + VIRGULA +
-                    ContratoDAO.TabelaGenero.COLUNA_NOME_GENERO + TIPO_TEXTO + " NOT NULL"+ ")";
+                    ContratoDAO.TabelaGenero.COLUNA_NOME_GENERO + TIPO_TEXTO + "TEXT NOT NULL"+ ")";
 
     private static final String SQL_DELETAR_TABELA_GENERO =
             "DROP TABLE IF EXISTS " + ContratoDAO.TabelaGenero.NOME_DA_TABELA;
@@ -37,7 +37,7 @@ public class HelperDAO extends SQLiteOpenHelper {
     private static final String SQL_CRIAR_TABELA_AUTOR =
             "CREATE TABLE IF NOT EXISTS " + ContratoDAO.TabelaAutor.NOME_DA_TABELA + " (" +
                     ContratoDAO.TabelaAutor.COLUNA_ID + TIPO_INTEIRO + " PRIMARY KEY AUTOINCREMENT" + VIRGULA +
-                    ContratoDAO.TabelaAutor.COLUNA_LOCALIDADE + TIPO_TEXTO + " NOT NULL" + VIRGULA +
+                    ContratoDAO.TabelaAutor.COLUNA_LOCALIDADE + TIPO_TEXTO + "TEXT NOT NULL" + VIRGULA +
                     ContratoDAO.TabelaAutor.COLUNA_NOME_AUTOR + TIPO_TEXTO + ")";
 
     private static final String SQL_DELETAR_TABELA_AUTOR =
@@ -47,7 +47,7 @@ public class HelperDAO extends SQLiteOpenHelper {
     private static final String SQL_CRIAR_TABELA_PASTA =
             "CREATE TABLE IF NOT EXISTS " + ContratoDAO.TabelaPasta.NOME_DA_TABELA + " (" +
                     ContratoDAO.TabelaPasta.COLUNA_ID + TIPO_INTEIRO + " PRIMARY KEY AUTOINCREMENT" + VIRGULA +
-                    ContratoDAO.TabelaPasta.COLUNA_NOME_PASTA + TIPO_TEXTO + " NOT NULL" + ")";
+                    ContratoDAO.TabelaPasta.COLUNA_NOME_PASTA + TIPO_TEXTO + "TEXT NOT NULL" + ")";
 
     private static final String SQL_DELETAR_TABELA_PASTA =
             "DROP TABLE IF EXISTS " + ContratoDAO.TabelaPasta.NOME_DA_TABELA;
@@ -56,12 +56,12 @@ public class HelperDAO extends SQLiteOpenHelper {
     private static final String SQL_CRIAR_TABELA_LIVRO=
             "CREATE TABLE IF NOT EXISTS " + ContratoDAO.TabelaLivro.NOME_DA_TABELA + " (" +
                     ContratoDAO.TabelaLivro.COLUNA_ID + TIPO_INTEIRO + " PRIMARY KEY AUTOINCREMENT" + VIRGULA +
-                    ContratoDAO.TabelaLivro.COLUNA_NOME_LIVRO + TIPO_TEXTO + " NOT NULL" + VIRGULA +
-                    ContratoDAO.TabelaLivro.COLUNA_LIDO + TIPO_INTEIRO + " NOT NULL" + VIRGULA +
+                    ContratoDAO.TabelaLivro.COLUNA_NOME_LIVRO + TIPO_TEXTO + "TEXT NOT NULL" + VIRGULA +
+                    ContratoDAO.TabelaLivro.COLUNA_LIDO + TIPO_INTEIRO + "TEXT NOT NULL" + VIRGULA +
                     ContratoDAO.TabelaLivro.COLUNA_ANO_PUBLICACAO + TIPO_TEXTO +  VIRGULA +
                     ContratoDAO.TabelaLivro.COLUNA_FOTO_LIVRO + TIPO_BLOB +  VIRGULA +
-                    ContratoDAO.TabelaLivro.COLUNA_ID_AUTOR + TIPO_INTEIRO + " NOT NULL" + VIRGULA +
-                    ContratoDAO.TabelaLivro.COLUNA_ID_GENERO + TIPO_INTEIRO + " NOT NULL" + VIRGULA +
+                    ContratoDAO.TabelaLivro.COLUNA_ID_AUTOR + TIPO_INTEIRO + "INT NOT NULL" + VIRGULA +
+                    ContratoDAO.TabelaLivro.COLUNA_ID_GENERO + TIPO_INTEIRO + "INT NOT NULL" + VIRGULA +
                     "FOREIGN KEY (IdAutor) REFERENCES " + ContratoDAO.TabelaAutor.COLUNA_ID + VIRGULA +
                     "FOREIGN KEY (IdGenero) REFERENCES " + ContratoDAO.TabelaGenero.COLUNA_ID + ")";
 
@@ -71,10 +71,10 @@ public class HelperDAO extends SQLiteOpenHelper {
     private static final String SQL_CRIAR_TABELA_AVALIACAO=
             "CREATE TABLE IF NOT EXISTS " + ContratoDAO.TabelaAvaliacao.NOME_DA_TABELA + " (" +
                     ContratoDAO.TabelaAvaliacao.COLUNA_ID + TIPO_INTEIRO + " PRIMARY KEY AUTOINCREMENT" + VIRGULA +
-                    ContratoDAO.TabelaAvaliacao.COLUNA_NOTA + TIPO_INTEIRO + " NOT NULL" + VIRGULA +
+                    ContratoDAO.TabelaAvaliacao.COLUNA_NOTA + TIPO_INTEIRO + "TEXT NOT NULL" + VIRGULA +
                     ContratoDAO.TabelaAvaliacao.COLUNA_PARECER + TIPO_TEXTO + VIRGULA +
-                    ContratoDAO.TabelaAvaliacao.COLUNA_DATA + TIPO_TEXTO + " NOT NULL" + VIRGULA +
-                    ContratoDAO.TabelaAvaliacao.COLUNA_IDLIVRO + TIPO_INTEIRO + " NOT NULL" + VIRGULA +
+                    ContratoDAO.TabelaAvaliacao.COLUNA_DATA + TIPO_TEXTO + "INT NOT NULL" + VIRGULA +
+                    ContratoDAO.TabelaAvaliacao.COLUNA_IDLIVRO + TIPO_INTEIRO + "INT NOT NULL" + VIRGULA +
                     "FOREIGN KEY (IdLivro) REFERENCES " + ContratoDAO.TabelaLivro.COLUNA_ID + ")";
 
     private static final String SQL_DELETAR_TABELA_AVALIACAO =
@@ -83,8 +83,8 @@ public class HelperDAO extends SQLiteOpenHelper {
     private static final String SQL_CRIAR_TABELA_ACERVO=
             "CREATE TABLE IF NOT EXISTS " + ContratoDAO.TabelaAcervo.NOME_DA_TABELA + " (" +
                     ContratoDAO.TabelaAcervo.COLUNA_ID + TIPO_INTEIRO + " PRIMARY KEY AUTOINCREMENT" + VIRGULA +
-                    ContratoDAO.TabelaAcervo.COLUNA_IDLIVRO + TIPO_INTEIRO + " NOT NULL" + VIRGULA +
-                    ContratoDAO.TabelaAcervo.COLUNA_IDPASTA + TIPO_INTEIRO + " NOT NULL" + VIRGULA +
+                    ContratoDAO.TabelaAcervo.COLUNA_IDLIVRO + TIPO_INTEIRO + "INT NOT NULL" + VIRGULA +
+                    ContratoDAO.TabelaAcervo.COLUNA_IDPASTA + TIPO_INTEIRO + "INT NOT NULL" + VIRGULA +
                     "FOREIGN KEY (IdLivro) REFERENCES " + ContratoDAO.TabelaLivro.COLUNA_ID + VIRGULA +
                     "FOREIGN KEY (IdPasta) REFERENCES " + ContratoDAO.TabelaPasta.COLUNA_ID + ")";
 
@@ -275,7 +275,7 @@ public class HelperDAO extends SQLiteOpenHelper {
 
     public Pasta buscarPastaPorId(int idPasta){
         SQLiteDatabase db = getReadableDatabase();
-    //Definir quais colunas vão retornar da tabela
+        //Definir quais colunas vão retornar da tabela
         String[] colunas = {
                 ContratoDAO.TabelaPasta.COLUNA_ID,
                 ContratoDAO.TabelaPasta.COLUNA_NOME_PASTA,
@@ -345,11 +345,10 @@ public class HelperDAO extends SQLiteOpenHelper {
                 ContratoDAO.TabelaLivro.COLUNA_NOME_LIVRO,
         };*/
 
+
         Cursor cursor = db.rawQuery("Select * From Livro l Join Acervo a ON a.IdLivro = l.Id Join Autor au ON l.IdAutor = au.Id Join " +
                 "Pasta p ON a.IdPasta = p.Id where a.IdPasta =?",new String[] {String.valueOf(idPasta)});
-                cursor.moveToFirst();
-
-
+        cursor.moveToFirst();
 
         if (cursor.getCount() > 0) {
             do {
@@ -448,5 +447,84 @@ public class HelperDAO extends SQLiteOpenHelper {
         return db.insert(ContratoDAO.TabelaAcervo.NOME_DA_TABELA, null, values);
     }
 
+    public Livro buscarLivroAutorGenero(Livro livro){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("Select l.Id, NomeLivro, Lido, AnoPublicacao, FotoLivro, g.Nome, a.NomeAutor  From Livro l Join Autor a " +
+                        "on l.IdAutor = a.Id join Genero g on l.IdGenero = g.Id where l.Id =? and l.IdAutor=? and l.IdGenero=?",
+                new String[] {String.valueOf(livro.getIdLivro()), String.valueOf(livro.getIdAutor()),String.valueOf(livro.getIdGenero())});
+        cursor.moveToFirst();
+        Livro l = new Livro();
+        if (cursor.getCount() > 0) {
+            do {
+                l.setIdLivro(cursor.getInt(0));
+                l.setNome(cursor.getString(1));
+                l.setLido(cursor.getInt(2));
+                l.setAnoPublicacao(cursor.getString(3));
+                l.setFotoLivro(cursor.getBlob(4));
+                l.setNomeAutor(cursor.getString(5));
+                l.setNomeGenero(cursor.getString(6));
+            } while (cursor.moveToNext());
+        }
+        return l;
+    }
+
+    public Livro buscarLivroPorId(int idLivro){
+        SQLiteDatabase db = getReadableDatabase();
+        //Definir quais colunas vão retornar da tabela
+        String[] colunas = {
+                ContratoDAO.TabelaLivro.COLUNA_ID,
+                ContratoDAO.TabelaLivro.COLUNA_NOME_LIVRO,
+                ContratoDAO.TabelaLivro.COLUNA_ID_AUTOR,
+                ContratoDAO.TabelaLivro.COLUNA_ID_GENERO
+        };
+
+        Cursor cursor = db.query(ContratoDAO.TabelaLivro.NOME_DA_TABELA,
+                colunas, ContratoDAO.TabelaLivro.COLUNA_ID + "=?", new String [] { String.valueOf(idLivro) }, null, null, null);
+
+        cursor.moveToFirst();
+        Livro l = new Livro();
+        if (cursor.getCount() > 0) {
+            do {
+                l.setIdLivro(cursor.getInt(0));
+                l.setNome(cursor.getString(1));
+                l.setIdAutor(cursor.getInt(2));
+                l.setIdGenero(cursor.getInt(3));
+            } while (cursor.moveToNext());
+        }
+        return l;
+
+    }
+
+    public long removerLivro(Livro l){
+        SQLiteDatabase db = getWritableDatabase();
+
+        String condicao = ContratoDAO.TabelaLivro.COLUNA_ID + " = ?";
+        String[] argumentos = {
+                String.valueOf(l.getIdLivro())
+        };
+        return db.delete(ContratoDAO.TabelaLivro.NOME_DA_TABELA,
+                condicao, argumentos);
+    }
+
+    public long alterarLivro(Livro l) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(ContratoDAO.TabelaLivro.COLUNA_NOME_LIVRO, l.getNome());
+        values.put(ContratoDAO.TabelaLivro.COLUNA_ID_GENERO, l.getIdGenero());
+        values.put(ContratoDAO.TabelaLivro.COLUNA_ID_AUTOR, l.getIdAutor());
+        values.put(ContratoDAO.TabelaLivro.COLUNA_ANO_PUBLICACAO, l.getAnoPublicacao());
+        values.put(ContratoDAO.TabelaLivro.COLUNA_LIDO, l.getLido());
+        values.put(ContratoDAO.TabelaLivro.COLUNA_FOTO_LIVRO,l.getFotoLivro());
+
+
+        String condicao = ContratoDAO.TabelaPasta.COLUNA_ID + " = ?";
+        String[] argumentos = {
+                String.valueOf(l.getIdLivro())
+        };
+
+        return db.update(ContratoDAO.TabelaPasta.NOME_DA_TABELA, values,
+                condicao, argumentos);
+    }
 
 }
