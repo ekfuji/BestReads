@@ -16,7 +16,6 @@
         <activity android:name=".Activities.EditarPastaActivity" />
         <activity android:name=".Activities.CadastrarPastaActivity" />
         <activity android:name=".Activities.HomePageActivity" />
-        <activity android:name=".Activities.EditarLivroActivity"/>
         <activity
             android:name=".Activities.MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">

@@ -59,7 +59,7 @@ public class HomePageActivity extends AppCompatActivity {
         loadAdapter();
 
         //Carregamento dos botãos do adapter
-        loadButtonsAdapter();
+       loadBottonsAdapter();
 
         loadSugestList();
 
@@ -91,7 +91,7 @@ public class HomePageActivity extends AppCompatActivity {
                 if(!enabled){
                     pastaAdapter = new PastaAdapter(PastaDAO.listarPastas(getBaseContext()));
                     pastaRecyclerView.setAdapter(pastaAdapter);
-                    loadButtonsAdapter();
+                    loadBottonsAdapter();
                 }
             }
 
@@ -120,7 +120,7 @@ public class HomePageActivity extends AppCompatActivity {
         pastaRecyclerView.setAdapter(pastaAdapter);
     }
 
-    private void loadButtonsAdapter()
+    private void loadBottonsAdapter()
     {
         pastaAdapter.setOnItemClickListener(new PastaAdapter.OnItemClickListener() {
             @Override
@@ -146,7 +146,7 @@ public class HomePageActivity extends AppCompatActivity {
     private void startSearch(String text) {
         pastaAdapter = new PastaAdapter(PastaDAO.encontrarPastaPorNome(this,text));
         pastaRecyclerView.setAdapter(pastaAdapter);
-        loadButtonsAdapter();
+        loadBottonsAdapter();
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
@@ -172,7 +172,7 @@ public class HomePageActivity extends AppCompatActivity {
         PastaDAO.excluirPasta(this,pasta);
         exibirAlertDialogExclusaoPastaComSucesso();
         loadAdapter();
-        loadButtonsAdapter();
+        loadBottonsAdapter();
         pastaAdapter.notifyDataSetChanged();
         pastaAdapter.notifyItemChanged(position);
 
