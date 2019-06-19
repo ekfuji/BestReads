@@ -42,7 +42,7 @@ private static int idPasta;
 
         livrosArrayList = new ArrayList<Livro>();
         livrosArrayList = LivroDAO.listarLivrosPorPasta(this,idPasta);
-        //livrosArrayList = LivroDAO.listarLivros(this);
+
         setContentView(R.layout.activity_home_pasta);
 
         livroRecyclerView = findViewById(R.id.recyclerViewLivros);

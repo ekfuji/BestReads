@@ -51,7 +51,7 @@ public ArrayList<Livro> acervoLivros;
         Livro livroAtual = acervoLivros.get(position);
         //Pede um int mas como faremos para salvar no banco dps carregar?
         livroViewHolder.nomeLivro.setText(livroAtual.getNome());
-        livroViewHolder.autorLivro.setText(String.valueOf(livroAtual.getIdAutor()));
+        livroViewHolder.autorLivro.setText(livroAtual.getNomeAutor());
         //livroViewHolder.fotoLivro.setImageResource(livroAtual.getFotoLivro().indexOf(position));
         try{
             /*ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(livroAtual.getFotoLivro());
@@ -66,8 +66,6 @@ public ArrayList<Livro> acervoLivros;
         }catch (Exception e){
             e.printStackTrace();
         }
-
-        //Verificar como faz para pegar nome do Autor se não conseguirmos retirar no card view
     }
 
     @Override
