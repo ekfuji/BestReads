@@ -22,4 +22,6 @@ public class AutorDAO {
                 .replaceAll("[^\\p{ASCII}]", "").toUpperCase();
         return helper.buscarAutorPorNome(nomeAutor);
     }
+
+
 }

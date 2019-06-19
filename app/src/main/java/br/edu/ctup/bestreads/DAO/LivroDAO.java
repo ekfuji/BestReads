@@ -6,6 +6,7 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 
 import br.edu.ctup.bestreads.Model.Acervo;
+import br.edu.ctup.bestreads.Model.Avaliacao;
 import br.edu.ctup.bestreads.Model.Livro;
 
 public class LivroDAO {
@@ -25,9 +26,19 @@ public class LivroDAO {
         return helper.listarLivrosPorPasta(idPasta);
     }
 
-    public static long cadastarLivroAcervo(Context context, Acervo acervo){
+    public static long cadastrarLivroAcervo(Context context, Acervo acervo){
         HelperDAO helper = new HelperDAO(context);
         return helper.cadastrarAcervo(acervo);
+    }
+
+    public static long cadastrarAvaliacaoLivro(Context context, Avaliacao avaliacao){
+        HelperDAO helper = new HelperDAO(context);
+        return helper.cadastrarAvaliacao(avaliacao);
+    }
+
+    public static Avaliacao buscarAvaliacaoPorIdLivro(Context context, int idLivro){
+        HelperDAO helper = new HelperDAO(context);
+        return helper.buscarAvaliacaoPorIdLivro(idLivro);
     }
 
     public static Livro buscarLivroPorNome(Context context, String nomeLivro){
