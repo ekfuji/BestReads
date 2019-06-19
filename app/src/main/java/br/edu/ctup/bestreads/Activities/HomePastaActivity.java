@@ -72,7 +72,7 @@ public class HomePastaActivity extends AppCompatActivity {
         livroAdapter.setOnItemClickListner(new LivroAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-
+                openFolder(position);
             }
 
             @Override
@@ -90,6 +90,17 @@ public class HomePastaActivity extends AppCompatActivity {
         });
 
     }
+
+    public void openFolder(int position){
+        Livro livro = livrosArrayList.get(position);
+        Intent intentOrigem = new Intent(HomePastaActivity.this, HomeLivroActivity.class);
+        intentOrigem.putExtra("idLivro",livro.getIdLivro());
+        intentOrigem.putExtra("idPasta",idPasta);
+        startActivity(intentOrigem);
+    }
+
+
+
     private void exibirAlertDialogExclusaoLivro(final int position, final ArrayList<Livro> itens) {
         //Cria o gerador do AlertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

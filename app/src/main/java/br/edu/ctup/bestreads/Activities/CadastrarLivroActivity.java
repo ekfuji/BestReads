@@ -97,7 +97,7 @@ public class CadastrarLivroActivity extends AppCompatActivity {
         acervo.setIdLivro(livro.getIdLivro());
         acervo.setIdPasta(idPasta);
 
-        LivroDAO.cadastarLivroAcervo(this,acervo);
+        LivroDAO.cadastrarLivroAcervo(this,acervo);
 
         Intent intentOrigem = new Intent(CadastrarLivroActivity.this, HomePastaActivity.class);
         intentOrigem.putExtra("idPasta",idPasta);

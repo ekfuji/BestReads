@@ -21,6 +21,7 @@ public class HelperDAO extends SQLiteOpenHelper {
     private  static  final int VERSION = 1;
     private static final String TIPO_TEXTO = " TEXT";
     private static final String TIPO_INTEIRO = " INTEGER";
+    private  static final String TIPO_FLOAT = " REAL";
     private static final String TIPO_BLOB = " BLOB";
     private static final String VIRGULA = ", ";
 
@@ -71,7 +72,7 @@ public class HelperDAO extends SQLiteOpenHelper {
     private static final String SQL_CRIAR_TABELA_AVALIACAO=
             "CREATE TABLE IF NOT EXISTS " + ContratoDAO.TabelaAvaliacao.NOME_DA_TABELA + " (" +
                     ContratoDAO.TabelaAvaliacao.COLUNA_ID + TIPO_INTEIRO + " PRIMARY KEY AUTOINCREMENT" + VIRGULA +
-                    ContratoDAO.TabelaAvaliacao.COLUNA_NOTA + TIPO_INTEIRO + "TEXT NOT NULL" + VIRGULA +
+                    ContratoDAO.TabelaAvaliacao.COLUNA_NOTA + TIPO_FLOAT + "TEXT NOT NULL" + VIRGULA +
                     ContratoDAO.TabelaAvaliacao.COLUNA_PARECER + TIPO_TEXTO + VIRGULA +
                     ContratoDAO.TabelaAvaliacao.COLUNA_DATA + TIPO_TEXTO + "INT NOT NULL" + VIRGULA +
                     ContratoDAO.TabelaAvaliacao.COLUNA_IDLIVRO + TIPO_INTEIRO + "INT NOT NULL" + VIRGULA +
@@ -438,6 +439,34 @@ public class HelperDAO extends SQLiteOpenHelper {
         values.put(ContratoDAO.TabelaAvaliacao.COLUNA_IDLIVRO, avaliacao.getIdLivro());
         return db.insert(ContratoDAO.TabelaAvaliacao.NOME_DA_TABELA, null, values);
     }
+
+
+    public Avaliacao buscarAvaliacaoPorIdLivro(int idLivro){
+        SQLiteDatabase db = getReadableDatabase();
+        String[] colunas = {
+                ContratoDAO.TabelaAvaliacao.COLUNA_ID,
+                ContratoDAO.TabelaAvaliacao.COLUNA_DATA,
+                ContratoDAO.TabelaAvaliacao.COLUNA_IDLIVRO,
+                ContratoDAO.TabelaAvaliacao.COLUNA_NOTA,
+                ContratoDAO.TabelaAvaliacao.COLUNA_PARECER
+        };
+
+        Cursor cursor = db.query(ContratoDAO.TabelaAvaliacao.NOME_DA_TABELA,
+                colunas, ContratoDAO.TabelaAvaliacao.COLUNA_IDLIVRO + "=?", new String [] { String.valueOf(idLivro) }, null, null, null);
+        cursor.moveToFirst();
+        Avaliacao a = new Avaliacao();
+        if (cursor.getCount() > 0) {
+            do {
+                a.setIdAvaliacao(cursor.getInt(0));
+                a.setData(cursor.getString(1));
+                a.setIdLivro(cursor.getInt(2));
+                a.setNota(cursor.getInt(3));
+                a.setParecer(cursor.getString(4));
+            } while (cursor.moveToNext());
+        }
+        return a;
+    }
+
 
     public long cadastrarAcervo(Acervo acervo){
         SQLiteDatabase db = getWritableDatabase();

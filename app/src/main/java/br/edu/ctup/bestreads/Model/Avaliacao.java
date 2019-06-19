@@ -2,12 +2,12 @@ package br.edu.ctup.bestreads.Model;
 
 public class Avaliacao {
     private int idAvaliacao;
-    private int nota;
+    private float nota;
     private String data;
     private String parecer;
     private int idLivro;
 
-    public Avaliacao(int idAvaliacao, int nota, String data, String parecer, int idLivro) {
+    public Avaliacao(int idAvaliacao, float nota, String data, String parecer, int idLivro) {
         this.idAvaliacao = idAvaliacao;
         this.nota = nota;
         this.data = data;
@@ -26,11 +26,11 @@ public class Avaliacao {
         this.idAvaliacao = idAvaliacao;
     }
 
-    public int getNota() {
+    public float getNota() {
         return nota;
     }
 
-    public void setNota(int nota) {
+    public void setNota(float nota) {
         this.nota = nota;
     }
 

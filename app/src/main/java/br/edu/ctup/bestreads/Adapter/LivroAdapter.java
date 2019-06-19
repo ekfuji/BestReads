@@ -33,7 +33,7 @@ public class LivroAdapter extends RecyclerView.Adapter<LivroAdapter.LivroViewHol
     public void setOnItemClickListner(OnItemClickListener listner){ itemListener = listner;}
 
     public static class LivroViewHolder extends RecyclerView.ViewHolder{
-        public ImageView fotoLivro, btnExcluirLivro, btnEditarLivro;
+        public ImageView fotoLivro, btnExcluirLivro, btnEditarLivro, btnStar;
         public TextView nomeLivro, autorLivro;
 
         public LivroViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
@@ -43,6 +43,7 @@ public class LivroAdapter extends RecyclerView.Adapter<LivroAdapter.LivroViewHol
             autorLivro = itemView.findViewById(R.id.nome_autor_livro);
             btnEditarLivro = itemView.findViewById(R.id.btn_editar_livro);
             btnExcluirLivro = itemView.findViewById(R.id.btn_excluir_livro);
+            btnStar = itemView.findViewById(R.id.btn_avaliacao_livro);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
