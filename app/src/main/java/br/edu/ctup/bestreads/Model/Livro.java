@@ -1,52 +1,31 @@
 package br.edu.ctup.bestreads.Model;
 
 import android.graphics.Bitmap;
-import android.os.Parcel;
-import android.os.Parcelable;
 
-public class Livro implements Parcelable {
+public class Livro {
     private int idLivro;
     private String nome;
     private String anoPublicacao;
+    private String nomeAutor;
     private int lido;
     private byte[] fotoLivro;
     private int idGenero;
-    private String nomeGenero,nomeAutor;
     private int idAutor;
 
-    public static final Creator<Livro> CREATOR = new Creator<Livro>() {
-        @Override
-        public Livro createFromParcel(Parcel in) {
-            return new Livro(in);
-        }
 
-        @Override
-        public Livro[] newArray(int size) {
-            return new Livro[size];
-        }
-    };
-
-    public Livro(Parcel in) {
-        idLivro = in.readInt();
-        nome = in.readString();
+    public Livro() {
     }
 
-    public Livro()
-    {
-    }
-
-    public Livro(int idLivro,int idPasta, String nome, String anoPublicacao, int lido, byte[] fotoLivro, Bitmap imgBitmap, int idGenero, int idAutor, String nomeAutor, String nomeGenero) {
+    public Livro(int idLivro, String nome, String anoPublicacao, String nomeAutor, int lido, byte[] fotoLivro, int idGenero, int idAutor) {
         this.idLivro = idLivro;
         this.nome = nome;
         this.anoPublicacao = anoPublicacao;
+        this.nomeAutor = nomeAutor;
         this.lido = lido;
         this.fotoLivro = fotoLivro;
         this.idGenero = idGenero;
         this.idAutor = idAutor;
-        this.nomeGenero = nomeGenero;
-        this.nomeAutor = nomeAutor;
     }
-
 
     public int getIdLivro() {
         return idLivro;
@@ -72,6 +51,14 @@ public class Livro implements Parcelable {
         this.anoPublicacao = anoPublicacao;
     }
 
+    public String getNomeAutor() {
+        return nomeAutor;
+    }
+
+    public void setNomeAutor(String nomeAutor) {
+        this.nomeAutor = nomeAutor;
+    }
+
     public int getLido() {
         return lido;
     }
@@ -92,10 +79,6 @@ public class Livro implements Parcelable {
         return idGenero;
     }
 
-    public String getNomeGenero(){ return nomeGenero;}
-
-    public void setNomeGenero(String nomeGenero){ this.nomeGenero =nomeGenero; }
-
     public void setIdGenero(int idGenero) {
         this.idGenero = idGenero;
     }
@@ -106,20 +89,5 @@ public class Livro implements Parcelable {
 
     public void setIdAutor(int idAutor) {
         this.idAutor = idAutor;
-    }
-
-    public String getNomeAutor(){ return nomeGenero;}
-
-    public void setNomeAutor(String nomeAutor){ this.nomeAutor = nomeAutor; }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(idLivro);
-        dest.writeString(nome);
     }
 }

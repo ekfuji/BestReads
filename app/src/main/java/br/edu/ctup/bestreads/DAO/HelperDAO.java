@@ -251,28 +251,6 @@ public class HelperDAO extends SQLiteOpenHelper {
         return g;
     }
 
-    public Livro buscarLivroAutorGenero(Livro livro){
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("Select l.Id, NomeLivro, Lido, AnoPublicacao, FotoLivro, g.Nome, a.NomeAutor  From Livro l Join Autor a " +
-                "on l.IdAutor = a.Id join Genero g on l.IdGenero = g.Id where l.Id =? and l.IdAutor=? and l.IdGenero=?",
-                 new String[] {String.valueOf(livro.getIdLivro()), String.valueOf(livro.getIdAutor()),String.valueOf(livro.getIdGenero())});
-        cursor.moveToFirst();
-        Livro l = new Livro();
-        if (cursor.getCount() > 0) {
-            do {
-                l.setIdLivro(cursor.getInt(0));
-                l.setNome(cursor.getString(1));
-                l.setLido(cursor.getInt(2));
-                l.setAnoPublicacao(cursor.getString(3));
-                l.setFotoLivro(cursor.getBlob(4));
-                l.setNomeAutor(cursor.getString(5));
-                l.setNomeGenero(cursor.getString(6));
-            } while (cursor.moveToNext());
-        }
-        return l;
-    }
-
-
     public Autor buscarAutorPorNome(String nomeAutor){
         SQLiteDatabase db = getReadableDatabase();
         //Definir quais colunas vão retornar da tabela
@@ -318,33 +296,6 @@ public class HelperDAO extends SQLiteOpenHelper {
 
     }
 
-    public Livro buscarLivroPorId(int idLivro){
-        SQLiteDatabase db = getReadableDatabase();
-        //Definir quais colunas vão retornar da tabela
-        String[] colunas = {
-                ContratoDAO.TabelaLivro.COLUNA_ID,
-                ContratoDAO.TabelaLivro.COLUNA_NOME_LIVRO,
-                ContratoDAO.TabelaLivro.COLUNA_ID_AUTOR,
-                ContratoDAO.TabelaLivro.COLUNA_ID_GENERO
-        };
-
-        Cursor cursor = db.query(ContratoDAO.TabelaLivro.NOME_DA_TABELA,
-                colunas, ContratoDAO.TabelaLivro.COLUNA_ID + "=?", new String [] { String.valueOf(idLivro) }, null, null, null);
-
-        cursor.moveToFirst();
-        Livro l = new Livro();
-        if (cursor.getCount() > 0) {
-            do {
-                l.setIdLivro(cursor.getInt(0));
-                l.setNome(cursor.getString(1));
-                l.setIdAutor(cursor.getInt(2));
-                l.setIdGenero(cursor.getInt(3));
-            } while (cursor.moveToNext());
-        }
-        return l;
-
-    }
-
     public long alterarPasta(Pasta p) {
         SQLiteDatabase db = getWritableDatabase();
 
@@ -360,28 +311,6 @@ public class HelperDAO extends SQLiteOpenHelper {
                 condicao, argumentos);
     }
 
-
-    public long alterarLivro(Livro l) {
-        SQLiteDatabase db = getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(ContratoDAO.TabelaLivro.COLUNA_NOME_LIVRO, l.getNome());
-        values.put(ContratoDAO.TabelaLivro.COLUNA_ID_GENERO, l.getIdGenero());
-        values.put(ContratoDAO.TabelaLivro.COLUNA_ID_AUTOR, l.getIdAutor());
-        values.put(ContratoDAO.TabelaLivro.COLUNA_ANO_PUBLICACAO, l.getAnoPublicacao());
-        values.put(ContratoDAO.TabelaLivro.COLUNA_LIDO, l.getLido());
-        values.put(ContratoDAO.TabelaLivro.COLUNA_FOTO_LIVRO,l.getFotoLivro());
-
-
-        String condicao = ContratoDAO.TabelaPasta.COLUNA_ID + " = ?";
-        String[] argumentos = {
-                String.valueOf(l.getIdLivro())
-        };
-
-        return db.update(ContratoDAO.TabelaPasta.NOME_DA_TABELA, values,
-                condicao, argumentos);
-    }
-
     public long removerPasta(Pasta c){
         SQLiteDatabase db = getWritableDatabase();
 
@@ -390,19 +319,6 @@ public class HelperDAO extends SQLiteOpenHelper {
                 String.valueOf(c.getIdPasta())
         };
         return db.delete(ContratoDAO.TabelaPasta.NOME_DA_TABELA,
-                condicao, argumentos);
-    }
-
-
-
-    public long removerLivro(Livro l){
-        SQLiteDatabase db = getWritableDatabase();
-
-        String condicao = ContratoDAO.TabelaLivro.COLUNA_ID + " = ?";
-        String[] argumentos = {
-                String.valueOf(l.getIdLivro())
-        };
-        return db.delete(ContratoDAO.TabelaLivro.NOME_DA_TABELA,
                 condicao, argumentos);
     }
 
