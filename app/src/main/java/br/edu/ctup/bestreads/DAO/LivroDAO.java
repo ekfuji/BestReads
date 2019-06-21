@@ -41,6 +41,7 @@ public class LivroDAO {
         return helper.buscarAvaliacaoPorIdLivro(idLivro);
     }
 
+
     public static Livro buscarLivroPorNome(Context context, String nomeLivro){
         HelperDAO helper = new HelperDAO(context);
         return helper.buscarLivroPorNome(nomeLivro);

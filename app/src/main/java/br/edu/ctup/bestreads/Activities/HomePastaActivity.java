@@ -25,6 +25,7 @@ import br.edu.ctup.bestreads.Adapter.PastaAdapter;
 import br.edu.ctup.bestreads.DAO.HelperDAO;
 import br.edu.ctup.bestreads.DAO.LivroDAO;
 import br.edu.ctup.bestreads.DAO.PastaDAO;
+import br.edu.ctup.bestreads.Model.Avaliacao;
 import br.edu.ctup.bestreads.Model.Livro;
 import br.edu.ctup.bestreads.Model.Pasta;
 import br.edu.ctup.bestreads.R;
@@ -175,14 +176,21 @@ public class HomePastaActivity extends AppCompatActivity {
         Intent pegarDado = getIntent();
         idPasta = pegarDado.getIntExtra("idPasta",0);
         livrosArrayList = new ArrayList<Livro>();
+        ArrayList<Livro> livrosArrayAcervoList = new ArrayList<Livro>();
         livrosArrayList = LivroDAO.listarLivrosPorPasta(this,idPasta);
+        for (Livro l: livrosArrayList) {
+            Avaliacao avaliacao = new Avaliacao();
+            avaliacao = LivroDAO.buscarAvaliacaoPorIdLivro(this,l.getIdLivro());
+            l.setIdAvaliacao(avaliacao.getIdAvaliacao());
+            livrosArrayAcervoList.add(l);
+        }
         //livrosArrayList = LivroDAO.listarLivros(this);
         setContentView(R.layout.activity_home_pasta);
 
         livroRecyclerView = findViewById(R.id.recyclerViewLivros);
         livroRecyclerView.setHasFixedSize(true);
         livroLayoutManager = new LinearLayoutManager(this);
-        livroAdapter = new LivroAdapter(livrosArrayList);
+        livroAdapter = new LivroAdapter(livrosArrayAcervoList);
         livroRecyclerView.setLayoutManager(livroLayoutManager);
         livroRecyclerView.setAdapter(livroAdapter);
     }

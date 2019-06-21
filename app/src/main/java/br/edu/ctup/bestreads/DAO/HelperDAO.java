@@ -362,6 +362,7 @@ public class HelperDAO extends SQLiteOpenHelper {
                 l.setIdAutor(cursor.getInt(5));
                 l.setIdGenero(cursor.getInt(6));
                 l.setNomeAutor(cursor.getString(12));
+                //l.setIdAvaliacao(cursor.getInt(15));
                 livros.add(l);
             } while (cursor.moveToNext());
         }
