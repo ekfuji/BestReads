@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_below="@+id/search_bar"
+        android:layout_below="@+id/search_bar_livros"
         android:layout_marginTop="60dp"
         android:padding="4dp"
         android:scrollbars="vertical" />
