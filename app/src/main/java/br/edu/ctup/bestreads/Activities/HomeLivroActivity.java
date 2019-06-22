@@ -22,7 +22,7 @@ import br.edu.ctup.bestreads.R;
 public class HomeLivroActivity extends AppCompatActivity {
 
     private ImageView imageViewLivro, imageViewLido;
-    private TextView txtNomeLivro, txtAutorLivro, txtGeneroLivro, txtAnoPublicacao, txtLido;
+    private TextView txtNomeLivro, txtAutorLivro, txtGeneroLivro, txtAnoPublicacao, txtLido, txtAvaliado;
     private Button btnAvaliar;
     private Livro livro;
     private int idLivro, idPasta;
@@ -44,6 +44,7 @@ public class HomeLivroActivity extends AppCompatActivity {
         txtGeneroLivro = findViewById(R.id.nome_genero_livro_home);
         txtAnoPublicacao = findViewById(R.id.ano_publicao_livro_home);
         txtLido = findViewById(R.id.lido_home);
+        txtAvaliado = findViewById(R.id.txt_avalidado);
         btnAvaliar = findViewById(R.id.btn_avaliar_livro_home);
 
 
@@ -65,6 +66,8 @@ public class HomeLivroActivity extends AppCompatActivity {
             }
             else {
                 btnAvaliar.setEnabled(false);
+                //btnAvaliar.setBackgroundResource(R.drawable.);
+                txtAvaliado.setVisibility(View.VISIBLE);
             }
 
         }

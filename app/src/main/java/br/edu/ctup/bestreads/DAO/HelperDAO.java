@@ -362,6 +362,7 @@ public class HelperDAO extends SQLiteOpenHelper {
                 l.setIdAutor(cursor.getInt(5));
                 l.setIdGenero(cursor.getInt(6));
                 l.setNomeAutor(cursor.getString(12));
+                //l.setIdAvaliacao(cursor.getInt(15));
                 livros.add(l);
             } while (cursor.moveToNext());
         }
@@ -556,4 +557,37 @@ public class HelperDAO extends SQLiteOpenHelper {
                 condicao, argumentos);
     }
 
+    public ArrayList<Livro> buscarLivrosPorNomeIdPasta(int idPasta, String nomePasta) {
+        ArrayList<Livro> livros = new ArrayList<Livro>();
+        SQLiteDatabase db = getReadableDatabase();
+
+
+        //Definir quais colunas vão retornar da tabela
+       /* String[] colunas = {
+                ContratoDAO.TabelaLivro.COLUNA_ID,
+                ContratoDAO.TabelaLivro.COLUNA_NOME_LIVRO,
+        };*/
+
+
+        Cursor cursor = db.rawQuery("Select * From Livro l Join Acervo a ON a.IdLivro = l.Id Join Autor au ON l.IdAutor = au.Id Join " +
+                "Pasta p ON a.IdPasta = p.Id where a.IdPasta =? and NomeLivro like ?",new String[] {String.valueOf(idPasta),"%"+nomePasta+"%"});
+        cursor.moveToFirst();
+
+        if (cursor.getCount() > 0) {
+            do {
+                Livro l = new Livro();
+                l.setIdLivro(cursor.getInt(0));
+                l.setNome(cursor.getString(1));
+                l.setLido(cursor.getInt(2));
+                l.setAnoPublicacao(cursor.getString(3));
+                l.setFotoLivro(cursor.getBlob(4));
+                l.setIdAutor(cursor.getInt(5));
+                l.setIdGenero(cursor.getInt(6));
+                l.setNomeAutor(cursor.getString(12));
+                //l.setIdAvaliacao(cursor.getInt(15));
+                livros.add(l);
+            } while (cursor.moveToNext());
+        }
+        return livros;
+    }
 }

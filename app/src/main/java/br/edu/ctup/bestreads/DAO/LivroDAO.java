@@ -26,6 +26,11 @@ public class LivroDAO {
         return helper.listarLivrosPorPasta(idPasta);
     }
 
+    public static ArrayList<Livro> buscarLivrosPorNomeIdPasta(Context context,int idPasta, String nomePasta){
+        HelperDAO helper = new HelperDAO(context);
+        return helper.buscarLivrosPorNomeIdPasta(idPasta,nomePasta);
+    }
+
     public static long cadastrarLivroAcervo(Context context, Acervo acervo){
         HelperDAO helper = new HelperDAO(context);
         return helper.cadastrarAcervo(acervo);
@@ -40,6 +45,7 @@ public class LivroDAO {
         HelperDAO helper = new HelperDAO(context);
         return helper.buscarAvaliacaoPorIdLivro(idLivro);
     }
+
 
     public static Livro buscarLivroPorNome(Context context, String nomeLivro){
         HelperDAO helper = new HelperDAO(context);

@@ -16,6 +16,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import br.edu.ctup.bestreads.DAO.LivroDAO;
+import br.edu.ctup.bestreads.Model.Avaliacao;
 import br.edu.ctup.bestreads.Model.Livro;
 import br.edu.ctup.bestreads.R;
 
@@ -96,10 +98,14 @@ public class LivroAdapter extends RecyclerView.Adapter<LivroAdapter.LivroViewHol
     @Override
     public void onBindViewHolder(@NonNull LivroViewHolder livroViewHolder, int position) {
         Livro livroAtual = acervoLivros.get(position);
-        //Pede um int mas como faremos para salvar no banco dps carregar?
         livroViewHolder.nomeLivro.setText(livroAtual.getNome());
         livroViewHolder.autorLivro.setText(String.valueOf(livroAtual.getNomeAutor()));
         //livroViewHolder.fotoLivro.setImageResource(livroAtual.getFotoLivro().indexOf(position));
+        if(livroAtual.getIdAvaliacao() == 0) {
+            livroViewHolder.btnStar.setImageResource(R.drawable.ic_star_nao_avaliado);
+        }else{
+            livroViewHolder.btnStar.setImageResource(R.drawable.ic_star_avaliado);
+        }
         try{
             /*ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(livroAtual.getFotoLivro());
             Bitmap bitmap = BitmapFactory.decodeStream(arrayInputStream);*/
@@ -114,7 +120,6 @@ public class LivroAdapter extends RecyclerView.Adapter<LivroAdapter.LivroViewHol
             e.printStackTrace();
         }
 
-        //Verificar como faz para pegar nome do Autor se não conseguirmos retirar no card view
     }
 
     @Override

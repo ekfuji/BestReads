@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,12 +27,14 @@ import br.edu.ctup.bestreads.Adapter.PastaAdapter;
 import br.edu.ctup.bestreads.DAO.HelperDAO;
 import br.edu.ctup.bestreads.DAO.LivroDAO;
 import br.edu.ctup.bestreads.DAO.PastaDAO;
+import br.edu.ctup.bestreads.Model.Avaliacao;
 import br.edu.ctup.bestreads.Model.Livro;
 import br.edu.ctup.bestreads.Model.Pasta;
 import br.edu.ctup.bestreads.R;
 
 public class HomePastaActivity extends AppCompatActivity {
     private ArrayList<Livro> livrosArrayList;
+    private ArrayList<String> suggestList = new ArrayList<>();
     private RecyclerView livroRecyclerView;
     private LivroAdapter livroAdapter;
     private AlertDialog alerta;
@@ -45,8 +49,76 @@ public class HomePastaActivity extends AppCompatActivity {
         btn_excluir_livro = findViewById(R.id.btn_excluir_livro);
         loadAdapter();
         loadButtonsAdapter();
+        materialSearchBar = (MaterialSearchBar) findViewById(R.id.search_bar_livros);
+
+
+        materialSearchBar.setHint("Qual livro você procura?");
+        materialSearchBar.setCardViewElevation(10);
+
+        loadSugestList();
+
+        materialSearchBar.addTextChangeListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                ArrayList<String> sugest = new ArrayList<>();
+                for (String search: suggestList){
+                    if(search.toLowerCase().contains(materialSearchBar.getText().toLowerCase())){
+                        sugest.add(search);
+                    }
+                }
+                materialSearchBar.setLastSuggestions(sugest);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
+            @Override
+            public void onSearchStateChanged(boolean enabled) {
+                if(!enabled){
+                    livroAdapter = new LivroAdapter(LivroDAO.listarLivrosPorPasta(getBaseContext(),idPasta));
+                    livroRecyclerView.setAdapter(livroAdapter);
+                    loadButtonsAdapter();
+                }
+            }
+
+            @Override
+            public void onSearchConfirmed(CharSequence text) {
+                startSearch(text.toString());
+            }
+
+            @Override
+            public void onButtonClicked(int buttonCode) {
+
+            }
+        });
 
     }
+
+    private void startSearch(String text) {
+        livroAdapter = new LivroAdapter(LivroDAO.buscarLivrosPorNomeIdPasta(this,idPasta,text));
+        livroRecyclerView.setAdapter(livroAdapter);
+        loadButtonsAdapter();
+    }
+
+    public void loadSugestList(){
+        ArrayList<String> nomeLivros = new ArrayList<String>();
+        ArrayList<Livro> livros = new ArrayList<>();
+        livros = LivroDAO.listarLivrosPorPasta(this,idPasta);
+        for (Livro livro: livros) {
+            nomeLivros.add(livro.getNome());
+        }
+        suggestList = nomeLivros;
+        materialSearchBar.setLastSuggestions(suggestList);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -175,14 +247,21 @@ public class HomePastaActivity extends AppCompatActivity {
         Intent pegarDado = getIntent();
         idPasta = pegarDado.getIntExtra("idPasta",0);
         livrosArrayList = new ArrayList<Livro>();
+        ArrayList<Livro> livrosArrayAcervoList = new ArrayList<Livro>();
         livrosArrayList = LivroDAO.listarLivrosPorPasta(this,idPasta);
+        for (Livro l: livrosArrayList) {
+            Avaliacao avaliacao = new Avaliacao();
+            avaliacao = LivroDAO.buscarAvaliacaoPorIdLivro(this,l.getIdLivro());
+            l.setIdAvaliacao(avaliacao.getIdAvaliacao());
+            livrosArrayAcervoList.add(l);
+        }
         //livrosArrayList = LivroDAO.listarLivros(this);
         setContentView(R.layout.activity_home_pasta);
 
         livroRecyclerView = findViewById(R.id.recyclerViewLivros);
         livroRecyclerView.setHasFixedSize(true);
         livroLayoutManager = new LinearLayoutManager(this);
-        livroAdapter = new LivroAdapter(livrosArrayList);
+        livroAdapter = new LivroAdapter(livrosArrayAcervoList);
         livroRecyclerView.setLayoutManager(livroLayoutManager);
         livroRecyclerView.setAdapter(livroAdapter);
     }

@@ -12,8 +12,9 @@ public class Livro {
     private String nomeGenero;
     private int idGenero;
     private int idAutor;
+    private int idAvaliacao;
 
-    public Livro(int idLivro, String nome, String anoPublicacao, int lido, byte[] fotoLivro, String nomeAutor, String nomeGenero, int idGenero, int idAutor) {
+    public Livro(int idLivro, String nome, String anoPublicacao, int lido, byte[] fotoLivro, String nomeAutor, String nomeGenero, int idGenero, int idAutor, int idAvaliacao) {
         this.idLivro = idLivro;
         this.nome = nome;
         this.anoPublicacao = anoPublicacao;
@@ -23,10 +24,16 @@ public class Livro {
         this.nomeGenero = nomeGenero;
         this.idGenero = idGenero;
         this.idAutor = idAutor;
+        this.idAvaliacao = idAvaliacao;
     }
 
     public Livro() {
     }
+
+
+    public int getIdAvaliacao(){ return idAvaliacao;}
+
+    public void setIdAvaliacao(int idAvaliacao) { this.idAvaliacao = idAvaliacao; }
 
     public String getNomeGenero() {
         return nomeGenero;

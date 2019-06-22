@@ -117,7 +117,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="10dp"/>
         <Button
             android:layout_width="150dp"
             android:layout_height="wrap_content"
@@ -130,6 +130,16 @@
             android:enabled="false"
             android:visibility="invisible"
             android:onClick="avaliarLivro"/>
+        <TextView
+            android:id="@+id/txt_avalidado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Já avaliado"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:textColor="@android:color/black"
+            android:visibility="invisible"/>
     </LinearLayout>
 
 </LinearLayout>
