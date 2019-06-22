@@ -1,9 +1,12 @@
 package br.edu.ctup.bestreads.Activities;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -29,6 +32,7 @@ public class CadastrarAvaliacaoActivity extends AppCompatActivity {
     private int idPasta;
     private int tipoLista;
     private Button btnSalvar;
+    private AlertDialog alerta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +49,6 @@ public class CadastrarAvaliacaoActivity extends AppCompatActivity {
         idPasta = getDados.getIntExtra("idPasta", 0);
         tipoLista = getDados.getIntExtra("tipoLista",0);
 
-        Toast.makeText(this, String.valueOf(idPasta), Toast.LENGTH_SHORT).show();
 
 
          date = new DatePickerDialog.OnDateSetListener() {
@@ -61,10 +64,11 @@ public class CadastrarAvaliacaoActivity extends AppCompatActivity {
         };
 
          if(tipoLista == 0){
-             dataAvaliacao.setEnabled(false);
-             txtAvaliacao.setEnabled(false);
-             notaAvaliacao.setEnabled(false);
-             btnSalvar.setEnabled(false);
+             dataAvaliacao.setInputType(InputType.TYPE_NULL);
+             txtAvaliacao.setInputType(InputType.TYPE_NULL);
+             notaAvaliacao.setIsIndicator(true);
+             //notaAvaliacao.setEnabled(false);
+             btnSalvar.setVisibility(View.INVISIBLE);
              Avaliacao avaliacao = LivroDAO.buscarAvaliacaoPorIdLivro(this,idLivro);
 
              notaAvaliacao.setRating(avaliacao.getNota());
@@ -83,9 +87,11 @@ public class CadastrarAvaliacaoActivity extends AppCompatActivity {
     }
 
     public void onClickDataAvaliacao(View view) {
-        new DatePickerDialog(CadastrarAvaliacaoActivity.this, date, myCalendar
-                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        if(tipoLista != 0){
+            new DatePickerDialog(CadastrarAvaliacaoActivity.this, date, myCalendar
+                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        }
     }
 
     public void salvarAvaliacao(View view) {
@@ -94,17 +100,61 @@ public class CadastrarAvaliacaoActivity extends AppCompatActivity {
         avaliacao.setData(dataAvaliacao.getText().toString());
         avaliacao.setNota(notaAvaliacao.getRating());
 
-        //Trocar o campo na base de dados para nota tipo Float e usar a função abaixo
-        //avaliacao.setNota(notaAvaliacao.getRating());
+        if(txtAvaliacao.getText().toString().isEmpty()){
+            exibirAlertDialogCampoVazio();
+            return;
+        }
+        else{
+            //Trocar o campo na base de dados para nota tipo Float e usar a função abaixo
+            //avaliacao.setNota(notaAvaliacao.getRating());
 
+            avaliacao.setIdLivro(idLivro);
+            LivroDAO.cadastrarAvaliacaoLivro(this,avaliacao);
+            exibirAlertDialogSalvoComSucesso();
+            Intent intentOrigem = new Intent(CadastrarAvaliacaoActivity.this, HomePastaActivity.class);
+            intentOrigem.putExtra("idPasta",idPasta);
+            startActivity(intentOrigem);
+        }
 
+    }
 
+    private void exibirAlertDialogCampoVazio() {
+        //Cria o gerador do AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //define o titulo
+        builder.setTitle("ATENÇÃO");
+        //define a mensagem
+        builder.setMessage( "Os Campos (Avaliação e Data não podem estar vazios, preencha e clique em salvar!");
+        //define um botão como positivo
+        builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                alerta.dismiss();
+            }
+        });
+        //cria o AlertDialog
+        alerta = builder.create();
+        //Exibe
+        alerta.show();
+    }
 
-        avaliacao.setIdLivro(idLivro);
-        LivroDAO.cadastrarAvaliacaoLivro(this,avaliacao);
-
-        Intent intentOrigem = new Intent(CadastrarAvaliacaoActivity.this, HomePastaActivity.class);
-        intentOrigem.putExtra("idPasta",idPasta);
-        startActivity(intentOrigem);
+    private void exibirAlertDialogSalvoComSucesso() {
+        //Cria o gerador do AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //define o titulo
+        builder.setTitle("Sucesso");
+        //define a mensagem
+        builder.setMessage("Avaliação realizada com sucesso!");
+        //define um botão como positivo
+        builder.setPositiveButton("Home Page", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                Toast.makeText(CadastrarAvaliacaoActivity.this, "Home Page=" + arg1, Toast.LENGTH_SHORT).show();
+                Intent intentOrigem = new Intent(CadastrarAvaliacaoActivity.this, HomePastaActivity.class);
+                startActivity(intentOrigem);
+            }
+        });
+        //cria o AlertDialog
+        alerta = builder.create();
+        //Exibe
+        alerta.show();
     }
 }

@@ -3,6 +3,7 @@ package br.edu.ctup.bestreads.Activities;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -47,8 +48,6 @@ public class HomeLivroActivity extends AppCompatActivity {
         txtAvaliado = findViewById(R.id.txt_avalidado);
         btnAvaliar = findViewById(R.id.btn_avaliar_livro_home);
 
-
-        Toast.makeText(this, String.valueOf(idPasta), Toast.LENGTH_SHORT).show();
         imageViewLivro.setImageBitmap(converterImagemParaBitMap());
         txtNomeLivro.setText(livro.getNome());
         txtAutorLivro.setText(livro.getNomeAutor());
@@ -67,6 +66,7 @@ public class HomeLivroActivity extends AppCompatActivity {
             else {
                 btnAvaliar.setEnabled(false);
                 //btnAvaliar.setBackgroundResource(R.drawable.);
+                btnAvaliar.setTextColor(Color.parseColor("#606060"));
                 txtAvaliado.setVisibility(View.VISIBLE);
             }
 

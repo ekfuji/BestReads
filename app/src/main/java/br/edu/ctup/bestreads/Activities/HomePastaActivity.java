@@ -171,7 +171,8 @@ public class HomePastaActivity extends AppCompatActivity {
     }
 
     public void openFolder(int position){
-        Livro livro = livrosArrayList.get(position);
+        ArrayList<Livro> itens = livroAdapter.acervoLivros;
+        Livro livro = itens.get(position);
         Intent intentOrigem = new Intent(HomePastaActivity.this, HomeLivroActivity.class);
         intentOrigem.putExtra("idLivro",livro.getIdLivro());
         intentOrigem.putExtra("idPasta",idPasta);

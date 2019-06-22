@@ -1,5 +1,7 @@
 package br.edu.ctup.bestreads.Activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,6 +32,8 @@ import br.edu.ctup.bestreads.R;
 public class CadastrarLivroActivity extends AppCompatActivity {
 
     private TextView txtNomeLivro, txtGeneroLivro, txtAutorLivro, txtAnoLivro;
+    private AlertDialog alerta;
+    private Livro livro;
     private CheckBox checkboxLido;
     private ImageView imageLivro;
     private int idPasta;
@@ -54,7 +58,7 @@ public class CadastrarLivroActivity extends AppCompatActivity {
     }
 
     public void salvarLivro(View view) {
-        Livro livro = new Livro();
+        livro = new Livro();
         Autor autor = new Autor();
         Genero genero = new Genero();
         Acervo acervo = new Acervo();
@@ -62,25 +66,30 @@ public class CadastrarLivroActivity extends AppCompatActivity {
 
         livro.setNome(txtNomeLivro.getText().toString());
         String nomeGenero = txtGeneroLivro.getText().toString();
-        genero =  GeneroDAO.buscarGeneroPorNome(this,nomeGenero);
-        if(genero.getIdGenero() == 0){
-            genero.setNomeGenero(nomeGenero);
-            GeneroDAO.cadastrarGenero(this,genero);
-            genero = GeneroDAO.buscarGeneroPorNome(this,nomeGenero);
-        }
-        livro.setIdGenero(genero.getIdGenero());
-
         String nomeAutor = txtAutorLivro.getText().toString();
-        autor = AutorDAO.buscarAutorPorNome(this,nomeAutor);
+        if(txtNomeLivro.getText().toString().isEmpty()
+        || txtAutorLivro.getText().toString().isEmpty()){
+            exibirAlertDialogCampoVazio();
+            return;
+        } else {
+            genero =  GeneroDAO.buscarGeneroPorNome(this,nomeGenero);
+            if(genero.getIdGenero() == 0){
+                genero.setNomeGenero(nomeGenero);
+                GeneroDAO.cadastrarGenero(this,genero);
+                genero = GeneroDAO.buscarGeneroPorNome(this,nomeGenero);
+            }
+            livro.setIdGenero(genero.getIdGenero());
 
-        if(autor.getIdAutor() == 0){
-            autor.setNomeAutor(nomeAutor);
-            AutorDAO.cadastrarAutor(this,autor);
             autor = AutorDAO.buscarAutorPorNome(this,nomeAutor);
-        }
-        livro.setIdAutor(autor.getIdAutor());
-        livro.setLido(idLido);
-        livro.setAnoPublicacao(txtAnoLivro.getText().toString());
+
+            if(autor.getIdAutor() == 0){
+                autor.setNomeAutor(nomeAutor);
+                AutorDAO.cadastrarAutor(this,autor);
+                autor = AutorDAO.buscarAutorPorNome(this,nomeAutor);
+            }
+            livro.setIdAutor(autor.getIdAutor());
+            livro.setLido(idLido);
+            livro.setAnoPublicacao(txtAnoLivro.getText().toString());
 
         try {
             imgLivro = converterImagemViewParaByte();
@@ -98,10 +107,12 @@ public class CadastrarLivroActivity extends AppCompatActivity {
         acervo.setIdPasta(idPasta);
 
         LivroDAO.cadastrarLivroAcervo(this,acervo);
-
+        exibirAlertDialogSalvoComSucesso();
         Intent intentOrigem = new Intent(CadastrarLivroActivity.this, HomePastaActivity.class);
         intentOrigem.putExtra("idPasta",idPasta);
         startActivity(intentOrigem);
+        }
+
     }
 
 
@@ -127,6 +138,47 @@ public class CadastrarLivroActivity extends AppCompatActivity {
             idLido = 0;
         }
     }
+
+    private void exibirAlertDialogCampoVazio() {
+        //Cria o gerador do AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //define o titulo
+        builder.setTitle("ATENÇÃO");
+        //define a mensagem
+        builder.setMessage( "Os Campos (Nome, Genero e Autor não podem estar vazios, preencha e clique em salvar!");
+        //define um botão como positivo
+        builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                alerta.dismiss();
+            }
+        });
+        //cria o AlertDialog
+        alerta = builder.create();
+        //Exibe
+        alerta.show();
+    }
+
+    private void exibirAlertDialogSalvoComSucesso() {
+        //Cria o gerador do AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //define o titulo
+        builder.setTitle("Sucesso");
+        //define a mensagem
+        builder.setMessage("O livro " + livro.getNome() + " foi adicionado com sucesso!");
+        //define um botão como positivo
+        builder.setPositiveButton("Home Page", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                Toast.makeText(CadastrarLivroActivity.this, "Home Page=" + arg1, Toast.LENGTH_SHORT).show();
+                Intent intentOrigem = new Intent(CadastrarLivroActivity.this, HomePastaActivity.class);
+                startActivity(intentOrigem);
+            }
+        });
+        //cria o AlertDialog
+        alerta = builder.create();
+        //Exibe
+        alerta.show();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode != CadastrarLivroActivity.RESULT_CANCELED){
@@ -142,5 +194,8 @@ public class CadastrarLivroActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), selectedImage.toString(), Toast.LENGTH_SHORT).show();
             }
         }
+
+
+
     }
 }

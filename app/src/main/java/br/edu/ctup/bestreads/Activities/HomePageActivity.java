@@ -160,7 +160,8 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     public void openFolder(int position){
-        Pasta pasta = pastasArrayList.get(position);
+        ArrayList<Pasta> itens = pastaAdapter.acervoPastas;
+        Pasta pasta = itens.get(position);
         Intent intentOrigem = new Intent(HomePageActivity.this, HomePastaActivity.class);
         intentOrigem.putExtra("idPasta",pasta.getIdPasta());
         startActivity(intentOrigem);
