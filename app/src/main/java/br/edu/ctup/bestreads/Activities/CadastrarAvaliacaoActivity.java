@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RatingBar;
@@ -26,6 +27,8 @@ public class CadastrarAvaliacaoActivity extends AppCompatActivity {
     DatePickerDialog.OnDateSetListener date;
     private int idLivro;
     private int idPasta;
+    private int tipoLista;
+    private Button btnSalvar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +37,15 @@ public class CadastrarAvaliacaoActivity extends AppCompatActivity {
         dataAvaliacao = findViewById(R.id.txt_data_avaliacao);
         txtAvaliacao =findViewById(R.id.txt_avaliacao);
         notaAvaliacao = findViewById(R.id.rating_nota_livro);
+        btnSalvar = findViewById(R.id.btn_salvar_avaliacao);
         myCalendar = Calendar.getInstance();
 
         Intent getDados = getIntent();
         idLivro = getDados.getIntExtra("idLivro",0);
         idPasta = getDados.getIntExtra("idPasta", 0);
-        Toast.makeText(this, String.valueOf(idPasta), Toast.LENGTH_SHORT).show();
+        tipoLista = getDados.getIntExtra("tipoLista",0);
 
+        Toast.makeText(this, String.valueOf(idPasta), Toast.LENGTH_SHORT).show();
 
 
          date = new DatePickerDialog.OnDateSetListener() {
@@ -54,6 +59,19 @@ public class CadastrarAvaliacaoActivity extends AppCompatActivity {
             }
 
         };
+
+         if(tipoLista == 0){
+             dataAvaliacao.setEnabled(false);
+             txtAvaliacao.setEnabled(false);
+             notaAvaliacao.setEnabled(false);
+             btnSalvar.setEnabled(false);
+             Avaliacao avaliacao = LivroDAO.buscarAvaliacaoPorIdLivro(this,idLivro);
+
+             notaAvaliacao.setRating(avaliacao.getNota());
+             txtAvaliacao.setText(avaliacao.getParecer());
+             dataAvaliacao.setText(avaliacao.getData());
+             //btnSalvar.setBackgroundResource(R.drawable.);
+         }
 
     }
     private void updateLabel() {

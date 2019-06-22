@@ -29,6 +29,7 @@ public class LivroAdapter extends RecyclerView.Adapter<LivroAdapter.LivroViewHol
         void onItemClick(int position);
         void onDeleteClick(int position);
         void onEditClick(int position);
+        void onClickStar(int position);
     }
 
 
@@ -76,6 +77,17 @@ public class LivroAdapter extends RecyclerView.Adapter<LivroAdapter.LivroViewHol
                         int position = getAdapterPosition();
                         if(position != RecyclerView.NO_POSITION){
                             listener.onDeleteClick(position);
+                        }
+                    }
+                }
+            });
+            btnStar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener!=null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.onClickStar(position);
                         }
                     }
                 }
