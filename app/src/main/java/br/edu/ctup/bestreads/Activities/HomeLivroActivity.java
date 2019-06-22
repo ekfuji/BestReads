@@ -97,6 +97,7 @@ public class HomeLivroActivity extends AppCompatActivity {
         Intent intentOrigem = new Intent(HomeLivroActivity.this, CadastrarAvaliacaoActivity.class);
         intentOrigem.putExtra("idLivro",livro.getIdLivro());
         intentOrigem.putExtra("idPasta",idPasta);
+        intentOrigem.putExtra("tipoLista", livro.getIdLivro());
         startActivity(intentOrigem);
     }
 }

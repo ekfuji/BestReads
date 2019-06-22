@@ -159,6 +159,13 @@ public class HomePastaActivity extends AppCompatActivity {
                 editItem(position, itens);
 
             }
+
+            @Override
+            public void onClickStar(int position) {
+                ArrayList<Livro> itens = livroAdapter.acervoLivros;
+                clickStar(position, itens);
+
+            }
         });
 
     }
@@ -220,6 +227,41 @@ public class HomePastaActivity extends AppCompatActivity {
         startActivity(intentOrigem);
         livroAdapter.notifyItemChanged(position);
 
+    }
+
+    public void clickStar(int position, ArrayList<Livro> itens){
+        int idLivro = itens.get(position).getIdLivro();
+        Livro livro = LivroDAO.BuscarLivroPorId(this, idLivro);
+        Avaliacao avaliacao = LivroDAO.buscarAvaliacaoPorIdLivro(this, idLivro);
+        if(avaliacao.getIdAvaliacao()!= 0) {
+            Intent intentOrigem = new Intent(HomePastaActivity.this, CadastrarAvaliacaoActivity.class);
+            intentOrigem.putExtra("idLivro", livro.getIdLivro());
+            intentOrigem.putExtra("idPasta", idPasta);
+            startActivity(intentOrigem);
+        }else{
+            exibirAlertaAvaliacao();
+        }
+        livroAdapter.notifyItemChanged(position);
+    }
+
+
+    private void exibirAlertaAvaliacao() {
+        //Cria o gerador do AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //define o titulo
+        builder.setTitle("ATENÇÃO");
+        //define a mensagem
+        builder.setMessage("Esse livro não possui avaliação");
+        //define um botão como negativo.
+        builder.setNegativeButton("Voltar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                alerta.dismiss();
+            }
+        });
+        //cria o AlertDialog
+        alerta = builder.create();
+        //Exibe
+        alerta.show();
     }
 
 
