@@ -84,6 +84,15 @@ public class HomePastaActivity extends AppCompatActivity {
             public void onSearchStateChanged(boolean enabled) {
                 if(!enabled){
                     livroAdapter = new LivroAdapter(LivroDAO.listarLivrosPorPasta(getBaseContext(),idPasta));
+                    ArrayList<Livro> livros = livroAdapter.acervoLivros;
+                    ArrayList<Livro> livroComAvaliacao = new ArrayList<Livro>();
+                    for (Livro l: livros) {
+                        Avaliacao avaliacao = new Avaliacao();
+                        avaliacao = LivroDAO.buscarAvaliacaoPorIdLivro(getBaseContext(),l.getIdLivro());
+                        l.setIdAvaliacao(avaliacao.getIdAvaliacao());
+                        livroComAvaliacao.add(l);
+                    }
+                    livroAdapter = new LivroAdapter(livroComAvaliacao);
                     livroRecyclerView.setAdapter(livroAdapter);
                     loadButtonsAdapter();
                 }
@@ -104,6 +113,15 @@ public class HomePastaActivity extends AppCompatActivity {
 
     private void startSearch(String text) {
         livroAdapter = new LivroAdapter(LivroDAO.buscarLivrosPorNomeIdPasta(this,idPasta,text));
+        ArrayList<Livro> livros = livroAdapter.acervoLivros;
+        ArrayList<Livro> livroComAvaliacao = new ArrayList<Livro>();
+        for (Livro l: livros) {
+            Avaliacao avaliacao = new Avaliacao();
+            avaliacao = LivroDAO.buscarAvaliacaoPorIdLivro(this,l.getIdLivro());
+            l.setIdAvaliacao(avaliacao.getIdAvaliacao());
+            livroComAvaliacao.add(l);
+        }
+        livroAdapter = new LivroAdapter(livroComAvaliacao);
         livroRecyclerView.setAdapter(livroAdapter);
         loadButtonsAdapter();
     }
