@@ -1,6 +1,10 @@
 package br.edu.ctup.bestreads.Activities;
 
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -106,11 +111,54 @@ public class CadastrarLivroActivity extends AppCompatActivity {
         acervo.setIdLivro(livro.getIdLivro());
         acervo.setIdPasta(idPasta);
 
+
+            final NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            //Criar um canal de comunicação
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                String nome = "CANAL_COMUNICACAO";
+                String descricao = "DESCRICAO_CANAL";
+                int prioridade = NotificationManager.IMPORTANCE_DEFAULT;
+                NotificationChannel notificationChannel =
+                        new NotificationChannel("idCanal01", nome, prioridade);
+                notificationChannel.setDescription(descricao);
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
+
+
+
+            //Ação do clique da notificação
+            Intent intentOrigem = new Intent();
+            //intentOrigem.putExtra("idPasta",livro.getIdLivro());
+            PendingIntent pendingIntent =
+                    PendingIntent.getActivity(this, 0,intentOrigem, 0);
+
+            //Criar a notificação
+            final NotificationCompat.Builder builder =
+                    new NotificationCompat.Builder(this, "idCanal01");
+            builder.setContentText("Livro Salvo com Sucesso!");
+            builder.setSmallIcon(R.drawable.ic_launcher_background);
+            builder.setContentIntent(pendingIntent);
+
+            Thread thread = new Thread(){
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(5000);
+                        notificationManager.notify(1, builder.build());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            thread.start();
         LivroDAO.cadastrarLivroAcervo(this,acervo);
         exibirAlertDialogSalvoComSucesso();
-        Intent intentOrigem = new Intent(CadastrarLivroActivity.this, HomePastaActivity.class);
-        intentOrigem.putExtra("idPasta",idPasta);
-        startActivity(intentOrigem);
+        Intent intentLivro = new Intent(CadastrarLivroActivity.this, HomePastaActivity.class);
+       // intentLivro.putExtra("idLivro",livro.getIdLivro());
+        intentLivro.putExtra("idPasta",idPasta);
+        startActivity(intentLivro);
         }
 
     }
