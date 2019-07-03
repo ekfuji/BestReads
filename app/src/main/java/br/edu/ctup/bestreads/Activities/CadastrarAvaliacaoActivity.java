@@ -147,7 +147,6 @@ public class CadastrarAvaliacaoActivity extends AppCompatActivity {
         //define um botão como positivo
         builder.setPositiveButton("Home Page", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
-                Toast.makeText(CadastrarAvaliacaoActivity.this, "Home Page=" + arg1, Toast.LENGTH_SHORT).show();
                 Intent intentOrigem = new Intent(CadastrarAvaliacaoActivity.this, HomePastaActivity.class);
                 startActivity(intentOrigem);
             }

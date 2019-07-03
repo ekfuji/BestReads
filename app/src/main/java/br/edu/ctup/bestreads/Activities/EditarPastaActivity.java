@@ -62,7 +62,7 @@ public class EditarPastaActivity extends AppCompatActivity {
         //define um botão como positivo
         builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
-                Toast.makeText(EditarPastaActivity.this, "Ok=" + arg1, Toast.LENGTH_SHORT).show();
+
             }
         });
         //cria o AlertDialog
@@ -81,7 +81,7 @@ public class EditarPastaActivity extends AppCompatActivity {
         //define um botão como positivo
         builder.setPositiveButton("Home Page", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
-                Toast.makeText(EditarPastaActivity.this, "Home Page=" + arg1, Toast.LENGTH_SHORT).show();
+
                 Intent intentOrigem = new Intent(EditarPastaActivity.this, HomePageActivity.class);
                 startActivity(intentOrigem);
             }

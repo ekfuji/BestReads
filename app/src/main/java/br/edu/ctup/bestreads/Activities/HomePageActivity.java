@@ -182,7 +182,6 @@ public class HomePageActivity extends AppCompatActivity {
     public void editItem(int position, ArrayList<Pasta> itens){
         int idPasta = itens.get(position).getIdPasta();
         Pasta pasta = PastaDAO.BuscarPastaPorId(this, idPasta);
-        Toast.makeText(this, String.valueOf(idPasta), Toast.LENGTH_SHORT).show();
         Intent intentOrigem = new Intent(HomePageActivity.this, EditarPastaActivity.class);
         intentOrigem.putExtra("Pasta",pasta);
         startActivity(intentOrigem);

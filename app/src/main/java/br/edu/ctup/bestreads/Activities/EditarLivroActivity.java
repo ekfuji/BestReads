@@ -168,7 +168,7 @@ public class EditarLivroActivity extends AppCompatActivity {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(getApplicationContext(), selectedImage.toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), selectedImage.toString(), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -202,7 +202,6 @@ public class EditarLivroActivity extends AppCompatActivity {
         //define um botão como positivo
         builder.setPositiveButton("Home Page", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
-                Toast.makeText(EditarLivroActivity.this, "Home Page=" + arg1, Toast.LENGTH_SHORT).show();
                 Intent intentOrigem = new Intent(EditarLivroActivity.this, HomePastaActivity.class);
                 startActivity(intentOrigem);
             }

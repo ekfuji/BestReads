@@ -72,8 +72,7 @@ public class CadastrarLivroActivity extends AppCompatActivity {
         livro.setNome(txtNomeLivro.getText().toString());
         String nomeGenero = txtGeneroLivro.getText().toString();
         String nomeAutor = txtAutorLivro.getText().toString();
-        if(txtNomeLivro.getText().toString().isEmpty()
-        || txtAutorLivro.getText().toString().isEmpty()){
+        if(txtNomeLivro.getText().toString().isEmpty() || txtAutorLivro.getText().toString().isEmpty() || txtGeneroLivro.getText().toString().isEmpty() ){
             exibirAlertDialogCampoVazio();
             return;
         } else {
@@ -145,7 +144,7 @@ public class CadastrarLivroActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(1000);
                         notificationManager.notify(1, builder.build());
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -216,7 +215,6 @@ public class CadastrarLivroActivity extends AppCompatActivity {
         //define um botão como positivo
         builder.setPositiveButton("Home Page", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
-                Toast.makeText(CadastrarLivroActivity.this, "Home Page=" + arg1, Toast.LENGTH_SHORT).show();
                 Intent intentOrigem = new Intent(CadastrarLivroActivity.this, HomePastaActivity.class);
                 startActivity(intentOrigem);
             }
@@ -239,7 +237,7 @@ public class CadastrarLivroActivity extends AppCompatActivity {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(getApplicationContext(), selectedImage.toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), selectedImage.toString(), Toast.LENGTH_SHORT).show();
             }
         }
 

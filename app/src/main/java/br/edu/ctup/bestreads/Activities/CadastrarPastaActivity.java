@@ -72,7 +72,6 @@ private Pasta pasta;
         //define um botão como positivo
         builder.setPositiveButton("Home Page", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
-                Toast.makeText(CadastrarPastaActivity.this, "Home Page=" + arg1, Toast.LENGTH_SHORT).show();
                 Intent intentOrigem = new Intent(CadastrarPastaActivity.this, HomePageActivity.class);
                 startActivity(intentOrigem);
             }
